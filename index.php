@@ -12,14 +12,24 @@
 <body>
     <header>
         <div class="container py-2">
-            <a href="index.php">CineRate</a>
-            <!-- Barra de búsqueda -->
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                    <button class="btn search-btn" type="button">
-                        <i class="bi bi-search"></i>
-                    </button>
+            <div class="row align-items-center">
+                <!-- Barra de búsqueda -->
+                <div class="col-md-3">
+                    <a href="index.php">CineRate</a>
+                </div>
+                  <!-- Barra de búsqueda -->
+                  <div class="col-md-5">
+                    <div class="input-group">
+                        <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
+                        <button class="btn search-btn" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Iconos de usuario  -->
+                <div class="col-md-4 text-end">
+                    <a href="#" class="btn btn-sm btn-warning me-2"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a>
+                    <a href="#" class="btn btn-sm btn-warning"><i class="bi bi-person-plus"></i> Registrarse</a>
                 </div>
             </div>
         </div>
