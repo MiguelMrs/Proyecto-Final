@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineRate</title>
     <link rel="icon" href="./Imagenes/Logo_fondo_blanco.png" type="image/x-icon">
-    <link rel="stylesheet" href="inicio.css" type="text/css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="header.css" type="text/css">
+
 </head>
 
 <body>
@@ -31,11 +32,13 @@
                         </button>
                     </div>
                 </div>
-                <!-- Iconos de usuario  -->
-                <div class="col-md-4 text-end">
-                    <a href="#" class="btn btn-sm btn-warning me-2"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a>
+                <!--Botones de inicio de sesion-->
+                <div class="col-md-4 d-flex py-2 justify-content-end align-items-center gap-2">
+                    <a href="#" class="btn btn-sm btn-warning"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a>
                     <a href="#" class="btn btn-sm btn-warning"><i class="bi bi-person-plus"></i> Registrarse</a>
                 </div>
+
+
             </div>
         </div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark py-2"> <!--Categoria se combierte en icono desplazable-->
