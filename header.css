@@ -6,10 +6,6 @@
     color:white;
     font-weight: 400px;
 }
-.categoria-cine.active{
-    color: #f5c518 ;
-}
-
 .categoria-cine:hover {
     color: #f5c518 ;
 }
@@ -25,3 +21,4 @@
     background-color: #f5c518;
     color: #1a1a1a;
 }
+

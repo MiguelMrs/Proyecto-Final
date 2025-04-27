@@ -12,44 +12,52 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="header.css" type="text/css">
 
+
 </head>
 
 <body>
     <header class="cine-header">
         <div class="container py-2">
-            <div class="row align-items-center">
-                <!-- Barra de búsqueda -->
-                <div class="col-md-3">
-                    <a href="index.php"> <img src="./Imagenes/Logo_negro.png" alt="Logo" class="img-fluid" style="max-height: 60px;"></a>
+            <div class="row align-items-center ">
+                <!--Contenedor que engloba el logo, buscador, botones-->
+                <div class="col-12 d-flex flex-column flex-sm-row align-items-center justify-content-between order-sm-1 gap-2">
+                    <!-- Logo -->
+                    <div>
+                        <a href="index.php">
+                            <img src="./Imagenes/Logo_negro.png" alt="Logo" class="img-fluid" style="max-height: 60px;">
+                        </a>
+                    </div>
 
-                </div>
-                <!-- Barra de búsqueda -->
-                <div class="col-md-5">
-                    <div class="input-group">
-                        <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                        <button class="btn search-btn" type="button"> <!--Icono de buscar-->
-                            <i class="bi bi-search"></i>
-                        </button>
+                    <!-- Botones de inicio de sesión -->
+                    <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
+                        <a href="iniciar_sesion.php" class="btn btn-sm btn-warning">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                        </a>
+                        <a href="registrar.php" class="btn btn-sm btn-warning">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </a>
+                    </div>
+                    <!-- Barra de búsqueda -->
+                    <div class="col-8 col-sm-5 order-sm-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
+                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <!--Botones de inicio de sesion-->
-                <div class="col-md-4 d-flex py-2 justify-content-end align-items-center gap-2">
-                    <a href="#" class="btn btn-sm btn-warning"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a>
-                    <a href="#" class="btn btn-sm btn-warning"><i class="bi bi-person-plus"></i> Registrarse</a>
-                </div>
-
-
             </div>
         </div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark py-2"> <!--Categoria se combierte en icono desplazable-->
             <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#categoriaCine" aria-controls="navbarCine" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#categoria-cine" aria-controls="navbarCine" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="categoriaCine">
+                <div class="collapse navbar-collapse" id="categoria-cine">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link categoria-cine active" href="index.php"><i class="bi bi-house-door"></i> Inicio</a>
+                            <a class="nav-link categoria-cine" href="index.php"><i class="bi bi-house-door"></i> Inicio</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link categoria-cine dropdown-toggle" href="#" id="icono-menu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -62,7 +70,6 @@
                                 <li><a class="dropdown-item categoria-cine" href="cienciaficcion.php">Ciencia Ficción</a></li>
                                 <li><a class="dropdown-item categoria-cine" href="terror.php">Terror</a></li>
                                 <li><a class="dropdown-item categoria-cine" href="romance.php">Romance</a></li>
-                                <!-- Estos se cargarían dinámicamente desde tu tabla GENERO -->
                             </ul>
                         </li>
                         <li class="nav-item">
