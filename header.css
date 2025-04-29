@@ -23,6 +23,11 @@
     color: #1a1a1a;
 }
 
+.form-control:focus {
+    border-color: #f5c518;
+    box-shadow: 0 0 0 3.5px rgba(245, 197, 24, 0.25);
+}
+
 /*FOOTER*/
 .footer-links{
     color:white;

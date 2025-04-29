@@ -1,0 +1,72 @@
+/* Header */
+.cine-header {
+    background-color: #1a1a1a;
+    color: white;
+}
+.categoria-cine{
+    color:white;
+    font-weight: 400px;
+}
+.categoria-cine:hover {
+    color: #f5c518 ;
+}
+.dropdown-item:hover {
+    background-color: #3a3a3a;
+    color: #f5c518;
+}
+.dropdown-menu-genero {
+    background-color: #1a1a1a ; 
+}
+.search-btn { /* Poner la lupa redonda */
+    border-radius: 0 20px 20px 0;
+    background-color: #f5c518;
+    color: #1a1a1a;
+}
+
+.form-control:focus {
+    border-color: #f5c518;
+    box-shadow: 0 0 0 3.5px rgba(245, 197, 24, 0.25);
+}
+
+
+body {
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.login-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.cine-brand {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.cine-brand img {
+    max-height: 80px;
+    margin-bottom: 1rem;
+}
+
+.btn-cine {
+    background-color: #f5c518;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.btn-cine:hover {
+    background-color: #e0b415;
+}
+
+.form-control:focus {
+    border-color: #f5c518;
+    box-shadow: 0 0 0 3.5px rgba(245, 197, 24, 0.25);
+}
