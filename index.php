@@ -90,8 +90,52 @@
         </nav>
     </header>
 
+    <footer class="bg-dark text-white pt-4 pb-2">
+        <div class="container">
+            <div class="row">
+                <!-- Géneros -->
+                <div class="col-md-2 col-6 mb-4">
+                    <h5 class="text-warning mb-3">Géneros</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="accion.php" class="footer-links text-decoration-none">Acción</a></li>
+                        <li class="mb-2"><a href="drama.php" class="footer-links text-decoration-none">Drama</a></li>
+                        <li class="mb-2"><a href="comedia.php" class="footer-links text-decoration-none">Comedia</a></li>
+                        <li class="mb-2"><a href="cienciaficcion.php" class="footer-links text-decoration-none">Ciencia Ficción</a></li>
+                    </ul>
+                </div>
 
+                <!-- Información legal -->
+                <div class="col-md-4 col-6 mb-4">
+                    <h5 class="text-warning mb-3">Legal</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="terminos.php" class="footer-links text-decoration-none">Términos de uso</a></li>
+                        <li class="mb-2"><a href="privacidad.php" class="footer-links text-decoration-none">Política de privacidad</a></li>
+                        <li class="mb-2"><a href="cookies.php" class="footer-links text-decoration-none">Política de cookies</a></li>
+                        <li class="mb-2"><a href="contacto.php" class="footer-links text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Sección Logo y Redes Sociales -->
+            <div class="col-md-4 mb-4">
+                <img src="./Imagenes/Logo_negro.png" alt="CineRate" class="mb-3" style="max-height: 50px;">
+                <div class="social-icons">
+                    <a href="#" class="text-white me-3"><i class="bi bi-facebook social-icons"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-twitter social-icons"></i></a>
+                    <a href="#" class="text-white me-3"><i class="bi bi-instagram social-icons"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-youtube social-icons"></i></a>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
 
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small">© 2025 CineRate. Todos los derechos reservados de Miguel Ángel Rodríguez Sojo.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
