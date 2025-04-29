@@ -35,3 +35,26 @@
 .social-icons:hover { 
     color: #f5c518 ;
 }
+
+/*main*/
+/* Asegurar consistencia en las tarjetas */
+.card {
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Estilo para el rating */
+.rating {
+    color: #f5c518;
+    font-weight: 500;
+}
+
+/* Ajuste fino para el contenedor de imágenes */
+.ratio-2x3 {
+    overflow: hidden;
+    border-radius: 0.375rem 0.375rem 0 0 !important;
+}

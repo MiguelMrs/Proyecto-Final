@@ -89,6 +89,102 @@
             </div>
         </nav>
     </header>
+    <!-- Fin del header -->
+
+    <!-- Contenido principal -->
+    <main class="container my-5">
+        <!-- Sección destacada -->
+        <section class="mb-5">
+            <h2 class="text-center mb-4">Películas Destacadas</h2>
+            <div class="row">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <!-- Película 1 -->
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                    <img src="./Imagenes/Dune.jpg" class="card-img-top object-fit-cover" alt="Dune: Parte Dos">
+                                <h5 class="card-title">Dune: Parte Dos</h5>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning text-dark me-1">Ciencia Ficción</span>
+                                    <span class="badge bg-secondary">2024</span>
+                                </div>
+                                <p class="card-text">La épica continuación del viaje de Paul Atreides mientras se une a los Fremen.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <span>4.8/5</span>
+                                    </div>
+                                    <a href="#" class="btn btn-sm btn-outline-dark">Ver detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Película 2 -->
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <img src="./Imagenes/oppenheimer.jpg" class="img-fluid object-fit-cover" alt="Oppenheimer">
+                                <h5 class="card-title">Oppenheimer</h5>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning text-dark me-1">Drama</span>
+                                    <span class="badge bg-secondary">2023</span>
+                                </div>
+                                <p class="card-text">La historia del físico J. Robert Oppenheimer y su papel en el desarrollo de la bomba atómica.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <span>4.9/5</span>
+                                    </div>
+                                    <a href="#" class="btn btn-sm btn-outline-dark">Ver detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Película 3 -->
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <img src="./Imagenes/PoorThings.jpg" class="img-fluid object-fit-cover" alt="Oppenheimer">
+                                <h5 class="card-title">Poor Things</h5>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning text-dark me-1">Comedia</span>
+                                    <span class="badge bg-secondary">2023</span>
+                                </div>
+                                <p class="card-text">La increíble historia de Bella Baxter, una joven devuelta a la vida por un científico.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <span>4.7/5</span>
+                                    </div>
+                                    <a href="#" class="btn btn-sm btn-outline-dark">Ver detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sección de próximos estrenos -->
+                <section class="mb-5">
+                    <h2 class="text-center mb-4">Próximos Estrenos</h2>
+                    <div class="row">
+                        <!-- Estreno 1 -->
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="card border-0 bg-light">
+                                <img src="./Imagenes/estreno1.jpg" class="card-img-top" alt="Próximo estreno">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Furiosa</h6>
+                                    <p class="text-muted small">Mayo 2024</p>
+                                    <button class="btn btn-sm btn-warning">Recordar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Más estrenos... -->
+                    </div>
+                </section>
+    </main>
+
+
 
     <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
@@ -135,7 +231,7 @@
         </div>
     </footer>
 
-   
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
