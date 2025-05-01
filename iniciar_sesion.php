@@ -126,7 +126,7 @@
                     <button type="submit" class="btn btn-cine w-100 mb-3">Iniciar Sesión</button>
                     
                     <div class="text-center">
-                        <p class="mb-0">¿No tienes una cuenta? <a href="registro.php" class="text-warning text-decoration-none">Regístrate</a></p>
+                        <p class="mb-0">¿No tienes una cuenta? <a href="registrar.php" class="text-warning text-decoration-none">Regístrate</a></p>
                     </div>
                 </form>
             </div>
