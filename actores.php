@@ -11,11 +11,10 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="header.css" type="text/css">
-
-
 </head>
 
 <body>
+
     <header class="cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
@@ -89,87 +88,76 @@
             </div>
         </nav>
     </header>
-    <!-- Fin del header -->
 
-    <!-- Contenido principal -->
-    <main class="container my-5">
-        <!-- Sección destacada -->
-        <section class="mb-5">
-            <h2 class="text-center mb-4">Películas Destacadas</h2>
-            <div class="row">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <!-- Película 1 -->
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="./Imagenes/Dune.jpg" class="card-img-top object-fit-cover" alt="Dune: Parte Dos">
-                                <h5 class="card-title">Dune: Parte Dos</h5>
-                                <div class="mb-2">
-                                    <span class="badge bg-warning text-dark me-1">Ciencia Ficción</span>
-                                    <span class="badge bg-secondary">2024</span>
-                                </div>
-                                <p class="card-text">La épica continuación del viaje de Paul Atreides mientras se une a los Fremen.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="rating">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <span>4.8/5</span>
-                                    </div>
-                                    <a href="#" class="btn btn-sm btn-outline-dark">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Película 2 -->
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="./Imagenes/oppenheimer.jpg" class="img-fluid object-fit-cover" alt="Oppenheimer">
-                                <h5 class="card-title">Oppenheimer</h5>
-                                <div class="mb-2">
-                                    <span class="badge bg-warning text-dark me-1">Drama</span>
-                                    <span class="badge bg-secondary">2023</span>
-                                </div>
-                                <p class="card-text">La historia del físico J. Robert Oppenheimer y su papel en el desarrollo de la bomba atómica.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="rating">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <span>4.9/5</span>
-                                    </div>
-                                    <a href="#" class="btn btn-sm btn-outline-dark">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Película 3 -->
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <img src="./Imagenes/PoorThings.jpg" class="img-fluid object-fit-cover" alt="Oppenheimer">
-                                <h5 class="card-title">Poor Things</h5>
-                                <div class="mb-2">
-                                    <span class="badge bg-warning text-dark me-1">Comedia</span>
-                                    <span class="badge bg-secondary">2023</span>
-                                </div>
-                                <p class="card-text">La increíble historia de Bella Baxter, una joven devuelta a la vida por un científico.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="rating">
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                        <span>4.7/5</span>
-                                    </div>
-                                    <a href="#" class="btn btn-sm btn-outline-dark">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="container mt-4 mb-4">
+    <h1 class="text-center mb-4">Actores Destacados</h1>
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <img src="./Imagenes/actor1.jpg" class="card-img-top object-fit-cover" alt="Pedro Pérez">
+            <div class="card-body">
+                <h5 class="card-title">Pedro Pérez</h5>
+                <p class="card-text">Actor español conocido por sus papeles en drama y comedia. Activo desde 2010, ha participado en más de 20 películas.</p>
+                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <img src="./Imagenes/actor2.jpg" class="card-img-top object-fit-cover" alt="María Gómez">
+            <div class="card-body">
+                <h5 class="card-title">María Gómez</h5>
+                <p class="card-text">Actriz reconocida por su versatilidad en películas de ciencia ficción y romance. Ganadora de 3 premios nacionales.</p>
+                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
+            </div>
+        </div>
+    </div>
 
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <img src="./Imagenes/actor3.jpg" class="card-img-top object-fit-cover" alt="Luis Fernández">
+            <div class="card-body">
+                <h5 class="card-title">Luis Fernández</h5>
+                <p class="card-text">Figura destacada del cine de acción, ganador de varios premios internacionales y protagonista de sagas populares.</p>
+                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
+            </div>
+        </div>
+    </div>
 
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <img src="./Imagenes/actor4.jpg" class="card-img-top object-fit-cover" alt="Sofía Martínez">
+            <div class="card-body">
+                <h5 class="card-title">Sofía Martínez</h5>
+                <p class="card-text">Joven promesa del cine independiente, destacada en cortometrajes y producciones internacionales.</p>
+                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <img src="./Imagenes/actor5.jpg" class="card-img-top object-fit-cover" alt="Javier Torres">
+            <div class="card-body">
+                <h5 class="card-title">Javier Torres</h5>
+                <p class="card-text">Veterano actor con más de 30 años de trayectoria en cine y televisión, maestro de la interpretación clásica.</p>
+                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <img src="./Imagenes/actor6.jpg" class="card-img-top object-fit-cover" alt="Carla Ruiz">
+            <div class="card-body">
+                <h5 class="card-title">Carla Ruiz</h5>
+                <p class="card-text">Actriz emergente especializada en teatro musical y series juveniles. Apasionada por la danza y el canto.</p>
+                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
+            </div>
+        </div>
+    </div>
+
+</div>
     <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
             <div class="row">
@@ -214,8 +202,6 @@
             </div>
         </div>
     </footer>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
