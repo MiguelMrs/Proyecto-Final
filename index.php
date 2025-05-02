@@ -1,3 +1,14 @@
+<?php
+require 'conexion.php';
+$sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO, 
+YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
+FROM PELICULAS
+LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO;
+";
+
+$resultado = $mysqli->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -93,6 +104,33 @@
 
     <!-- Contenido principal -->
     <main class="container my-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <?php while ($fila = $resultado->fetch_assoc()) { ?>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
+                            <div class="mb-2">
+                                <span class="badge bg-warning text-dark me-1""><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span><br>
+                                <span class="badge bg-secondary"> <?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
+                            </div>
+                            <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
+                            <p class="card-text"><?php echo $fila['BIOGRAFIA'] ?? 'Sin biografía'; ?></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="rating">
+                                    <i class="bi bi-star-fill text-warning"></i> 
+                                    <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-dark">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+
+
         <!-- Sección destacada -->
         <section class="mb-5">
             <h2 class="text-center mb-4">Películas Destacadas</h2>
