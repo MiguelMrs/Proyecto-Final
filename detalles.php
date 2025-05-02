@@ -1,15 +1,9 @@
 <?php
 require 'conexion.php';
-$sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO, 
-YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
-FROM PELICULAS
-LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO;";
-
-;
-
+$id_peli = $_GET['id_peli'];
+$sql = "SELECT * FROM peliculas where id_peli = $id_peli";
 $resultado = $mysqli->query($sql);
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -101,38 +95,95 @@ $resultado = $mysqli->query($sql);
             </div>
         </nav>
     </header>
-    <!-- Fin del header -->
 
-    <!-- Contenido principal -->
+    <style>
+        .star-rating i {
+            font-size: 2rem;
+            color: gray;
+            cursor: pointer;
+        }
+
+        .star-rating i.selected {
+            color: gold;
+        }
+    </style>
     <main class="container my-5">
-        <h2 class="text-center mb-4">Películas Destacadas</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <div class="col-6 col-md-4 mb-4">
-                    <div class="card h-100 shadow">
-                        <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
-                            <div class="mb-2">
-                                <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span><br>
-                                <span class="badge bg-secondary"> <?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
-                            </div>
-                            <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="rating">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
-                                </div>
-                                <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-outline-dark">Ver detalles</a>
-                            </div>
-                        </div>
+        <h1 class="text-center mb-4">Dune: Parte Dos</h1>
+
+        <div class="row">
+            <div class="col-md-4">
+                <img src="./Imagenes/Dune.jpg" class="img-fluid rounded shadow" alt="Dune: Parte Dos">
+            </div>
+            <div class="col-md-8">
+                <h5>
+                    Género:
+                    <span class="badge bg-warning text-dark">Ciencia Ficción</span>
+                </h5>
+                <h5>Año: 2024</h5>
+                <h5>Duración: 166 min</h5>
+                <h5>Calificación: 4.8/5 <i class="bi bi-star-fill text-warning"></i></h5>
+                <h5>Presupuesto: $190,000,000</h5>
+                <h5>Recaudación total: $700,000,000</h5>
+                <p class="mt-3"><strong>Biografía:</strong> La épica continuación del viaje de Paul Atreides mientras se une a los Fremen en su lucha contra los conspiradores que destruyeron a su familia.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <h3 class="mt-5">Actores que participan</h3>
+
+        <div class="container my-4">
+            <h4>Reparto</h4>
+            <div class="position-relative">
+                <div class="d-flex overflow-auto" style="scroll-snap-type: x mandatory;">
+                    <div class="me-3 text-center" style="scroll-snap-align: start;">
+                        <img src="./Imagenes/actor1.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
+                        <div>David Bradley</div>
                     </div>
+                    <div class="me-3 text-center" style="scroll-snap-align: start;">
+                        <img src="./Imagenes/actor2.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
+                        <div>Lars Mikkelsen</div>
+                    </div>
+                    <div class="me-3 text-center" style="scroll-snap-align: start;">
+                        <img src="./Imagenes/actor3.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
+                        <div>Christian Convery</div>
+                    </div>
+                    <div class="me-3 text-center" style="scroll-snap-align: start;">
+                        <img src="./Imagenes/actor4.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
+                        <div>Sofia Galasso</div>
+                    </div>
+
                 </div>
-            <?php } ?>
+            </div>
+        </div>
+        <hr>
+        <h3>Premios obtenidos</h3>
+        <ul>
+            <li>Oscar a Mejores Efectos Visuales (2024)</li>
+            <li>BAFTA a Mejor Dirección (2024)</li>
+        </ul>
+        <hr class="my-4">
+        <h4>Vota esta película</h4>
+        <div class="star-rating mb-3">
+            <i class="bi bi-star" data-value="1"></i>
+            <i class="bi bi-star" data-value="2"></i>
+            <i class="bi bi-star" data-value="3"></i>
+            <i class="bi bi-star" data-value="4"></i>
+            <i class="bi bi-star" data-value="5"></i>
+        </div>
+
+        <div class="mb-3">
+            <label for="comentario" class="form-label">Tu comentario</label>
+            <textarea class="form-control" id="comentario" rows="3" placeholder="Escribe tu opinión..."></textarea>
+        </div>
+        <button class="btn btn-primary">Enviar Voto</button>
+
+        <div>
+            <a href="index.html" class="btn btn-primary mt-4">
+                <i class="bi bi-arrow-left"></i> Volver al listado
+            </a>
         </div>
     </main>
-
-
 
     <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
@@ -178,9 +229,26 @@ $resultado = $mysqli->query($sql);
             </div>
         </div>
     </footer>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        const stars = document.querySelectorAll('.star-rating i');
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const value = parseInt(star.getAttribute('data-value'));
+                stars.forEach(s => {
+                    if (parseInt(s.getAttribute('data-value')) <= value) {
+                        s.classList.remove('bi-star');
+                        s.classList.add('bi-star-fill', 'text-warning');
+                    } else {
+                        s.classList.remove('bi-star-fill', 'text-warning');
+                        s.classList.add('bi-star');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

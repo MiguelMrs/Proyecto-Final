@@ -1,20 +1,7 @@
-<?php
-require 'conexion.php';
-$sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO, 
-YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
-FROM PELICULAS
-LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO;";
-
-;
-
-$resultado = $mysqli->query($sql);
-?>
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineRate</title>
     <link rel="icon" href="./Imagenes/Logo_fondo_blanco.png" type="image/x-icon">
@@ -23,12 +10,9 @@ $resultado = $mysqli->query($sql);
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="header.css" type="text/css">
-
-
 </head>
-
 <body>
-    <header class="cine-header">
+<header class="cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -101,40 +85,45 @@ $resultado = $mysqli->query($sql);
             </div>
         </nav>
     </header>
-    <!-- Fin del header -->
+    <div class="container">
+        <h1>Condiciones de Uso</h1>
+        <p>Bienvenido a nuestra Biblioteca de Cine en línea. Al acceder y utilizar este sitio web, aceptas cumplir con las siguientes condiciones de uso. Si no estás de acuerdo con estos términos, te recomendamos que no utilices este sitio.</p>
 
-    <!-- Contenido principal -->
-    <main class="container my-5">
-        <h2 class="text-center mb-4">Películas Destacadas</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <div class="col-6 col-md-4 mb-4">
-                    <div class="card h-100 shadow">
-                        <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
-                            <div class="mb-2">
-                                <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span><br>
-                                <span class="badge bg-secondary"> <?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
-                            </div>
-                            <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="rating">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
-                                </div>
-                                <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-outline-dark">Ver detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php } ?>
+        <h2>1. Aceptación de los términos</h2>
+        <p>Al utilizar este sitio web, el usuario acepta estar sujeto a las condiciones establecidas en este documento. El sitio web se reserva el derecho de modificar estos términos en cualquier momento y sin previo aviso. Es responsabilidad del usuario revisar periódicamente estas condiciones para estar al tanto de los cambios.</p>
+
+        <h2>2. Acceso al sitio</h2>
+        <p>El acceso al sitio web está permitido de forma temporal, y nos reservamos el derecho de retirar o modificar el servicio sin previo aviso. No seremos responsables si, por cualquier razón, el sitio web no está disponible en algún momento o durante algún período.</p>
+
+        <h2>3. Uso del contenido</h2>
+        <p>El contenido de la Biblioteca de Cine, incluidos los textos, imágenes, vídeos y otros materiales, es propiedad exclusiva de nuestros proveedores y está protegido por las leyes de derechos de autor. Queda estrictamente prohibido el uso no autorizado de cualquier material presente en el sitio.</p>
+
+        <h2>4. Registro de usuarios</h2>
+        <p>Para acceder a ciertas funciones del sitio, los usuarios pueden necesitar registrarse. El usuario se compromete a proporcionar información veraz, precisa, actualizada y completa durante el proceso de registro y a mantener la confidencialidad de su cuenta.</p>
+
+        <h2>5. Responsabilidad del usuario</h2>
+        <p>El usuario se compromete a utilizar el sitio de conformidad con todas las leyes aplicables y con las condiciones de uso. El usuario es el único responsable de su actividad en el sitio y de cualquier contenido que suba o comparta.</p>
+
+        <h2>6. Prohibiciones</h2>
+        <ul>
+            <li>No realizar actividades que puedan dañar, deshabilitar, sobrecargar o deteriorar el sitio.</li>
+            <li>No realizar actividades que infrinjan los derechos de propiedad intelectual de terceros.</li>
+            <li>No utilizar el sitio para fines ilícitos, fraudulentos o no autorizados.</li>
+        </ul>
+
+        <h2>7. Enlaces a sitios de terceros</h2>
+        <p>Este sitio puede contener enlaces a otros sitios web que no están bajo nuestro control. No somos responsables de los contenidos o prácticas de privacidad de esos sitios y no respaldamos ni somos responsables de los servicios ofrecidos en dichos sitios.</p>
+
+        <h2>8. Limitación de responsabilidad</h2>
+        <p>En la medida máxima permitida por la ley, no seremos responsables por ningún daño directo, indirecto, incidental, especial, consecuente o punitivo que resulte del uso de este sitio web.</p>
+
+        <h2>9. Modificaciones de las condiciones</h2>
+        <p>Nos reservamos el derecho de modificar estas condiciones de uso en cualquier momento. Las modificaciones serán efectivas a partir de su publicación en esta página. Se recomienda que los usuarios revisen regularmente las condiciones para mantenerse informados sobre cualquier cambio.</p>
+
+        <h2>10. Ley aplicable y jurisdicción</h2>
+        <p>Estas condiciones de uso se regirán e interpretarán de acuerdo con las leyes del país en el que operamos. Cualquier disputa relacionada con el uso de este sitio se someterá a la jurisdicción exclusiva de los tribunales competentes en dicho país.</p>
         </div>
-    </main>
-
-
-
-    <footer class="bg-dark text-white pt-4 pb-2">
+        <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
             <div class="row">
                 <!-- Géneros -->
@@ -177,10 +166,9 @@ $resultado = $mysqli->query($sql);
                 </div>
             </div>
         </div>
+
     </footer>
+   
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
