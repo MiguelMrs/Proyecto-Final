@@ -1,19 +1,21 @@
 <?php
 require 'conexion.php';
+
 $id_peli = isset($_GET['id_peli']) ? intval($_GET['id_peli']) : 0;
 if ($id_peli <= 0) {
     die("Película no encontrada");
     exit;
 }
-$stmt = $mysqli->prepare("SELECT * FROM peliculas WHERE id_peli = ?");
-$stmt->bind_param("i", $id_peli);  // "i" = integer
+
+$stmt = $conn->prepare("SELECT * FROM peliculas WHERE id_peli = ?");
+$stmt->bind_param("i", $id_peli);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
 $id_peli = $_GET['id_peli'];
 
 // Obtener detalles de la película
-$stmt = $mysqli->prepare("
+$stmt = $conn->prepare("
     SELECT 
         p.titulo, p.FECHA_ESTRENO, p.duracion, p.calificacion, 
         p.presupuesto, p.total_taquilla, p.IMAGEN, p.biografia,
@@ -30,7 +32,7 @@ $resultado = $stmt->get_result();
 $peli = $resultado->fetch_assoc();
 
 // Obtener actores
-$stmt_actores = $mysqli->prepare("
+$stmt_actores = $conn->prepare("
     SELECT a.nombre, a.foto
     FROM peliculas_actores r
     JOIN actores a ON r.id_actor = a.id_actor
@@ -41,7 +43,7 @@ $stmt_actores->execute();
 $actores = $stmt_actores->get_result();
 
 // Obtener premios
-$stmt_premios = $mysqli->prepare("
+$stmt_premios = $conn->prepare("
     SELECT id_peli, Nombre_premio, ano
     FROM premio
     WHERE id_peli = ?
@@ -49,6 +51,7 @@ $stmt_premios = $mysqli->prepare("
 $stmt_premios->bind_param("i", $id_peli);
 $stmt_premios->execute();
 $premios = $stmt_premios->get_result();
+
 
 ?>
 
@@ -70,7 +73,7 @@ $premios = $stmt_premios->get_result();
 </head>
 
 <body>
-    <header class="cine-header">
+    <header class=" cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -184,7 +187,7 @@ $premios = $stmt_premios->get_result();
                 <div class="d-flex overflow-auto" style="scroll-snap-type: x mandatory;">
                     <?php while ($actor = $actores->fetch_assoc()): ?>
                         <div class="me-3 text-center" style="scroll-snap-align: start;">
-                            <img src="./Imagenes/<?php echo htmlspecialchars($actor['foto']); ?>" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
+                            <img src="./Imagenes/<?php echo htmlspecialchars($actor['foto']); ?>" class="rounded" alt="<?php echo htmlspecialchars($actor['nombre']); ?>" style="width: 100px; height: 140px; object-fit: cover;">
                             <div><?php echo htmlspecialchars($actor['nombre']); ?></div>
                         </div>
                     <?php endwhile; ?>
@@ -196,10 +199,89 @@ $premios = $stmt_premios->get_result();
 
         <h3>Premios obtenidos</h3>
         <ul>
-            <?php while ($premio = $premios->fetch_assoc()): ?>
-                <li><?php echo htmlspecialchars($premio['nombre_premio']); ?> (<?php echo $premio['año']; ?>)</li>
-            <?php endwhile; ?>
+            <?php if ($premios->num_rows > 0): ?>
+                <?php while ($premio = $premios->fetch_assoc()): ?>
+                    <li><?php echo htmlspecialchars($premio['nombre_premio']); ?> (<?php echo $premio['ano']; ?>)</li>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <li>Ningún premio ganado</li>
+            <?php endif; ?>
         </ul>
+
+        <hr>
+        <?php
+
+        $id_peli = intval($_GET['id_peli'] ?? 0);
+        if ($id_peli <= 0) {
+            echo "<p>Película no encontrada</p>";
+            exit;
+        }
+
+        // Verificamos si el usuario ya votó esta película mediante cookie
+        $voto_realizado = isset($_COOKIE["votado_peli_" . $id_peli]);
+
+        // Mostrar formulario solo si no ha votado
+        if (!$voto_realizado):
+        ?>
+
+            <hr>
+            <h3>Vota y comenta</h3>
+            <form action="guardar_voto.php" method="post" id="form-voto">
+                <input type="hidden" name="id_peli" value="<?php echo htmlspecialchars($id_peli); ?>">
+                <input type="hidden" name="voto" id="voto" value="0">
+
+                <div class="star-rating mb-3">
+                    <i class="bi bi-star" data-value="1"></i>
+                    <i class="bi bi-star" data-value="2"></i>
+                    <i class="bi bi-star" data-value="3"></i>
+                    <i class="bi bi-star" data-value="4"></i>
+                    <i class="bi bi-star" data-value="5"></i>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comentario" class="form-label">Tu comentario</label>
+                    <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Escribe tu opinión..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar Voto</button>
+            </form>
+
+        <?php else: ?>
+            <p><strong>Ya has votado esta película. ¡Gracias por tu participación!</strong></p>
+        <?php endif; ?>
+
+        <?php
+        // Consulta para obtener comentarios de la película
+        $sql = "SELECT CALIFICACION, COMENTARIO, FECHA_COMENTARIO, ID_USER FROM comentarios WHERE ID_PELI = ? ORDER BY FECHA_COMENTARIO DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id_peli);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 0) {
+            echo "<p>No hay comentarios todavía para esta película.</p>";
+        } else {
+            echo "<h4>Comentarios de usuarios:</h4>";
+            echo "<ul class='list-group'>";
+            while ($row = $result->fetch_assoc()) {
+                // Mostrar estrellas según la calificación
+                $estrellas = str_repeat('★', $row['CALIFICACION']) . str_repeat('☆', 5 - $row['CALIFICACION']);
+
+                // Nombre del usuario o anónimo
+                $usuario = 'Anónimo';
+                if (!empty($row['ID_USER'])) {
+                    $usuario = "Usuario #" . $row['ID_USER'];
+                }
+
+                echo "<li class='list-group-item'>";
+                echo "<strong>$usuario</strong> <small>(" . $row['FECHA_COMENTARIO'] . ")</small><br>";
+                echo "<span style='color:gold; font-size:1.2em;'>$estrellas</span><br>";
+                echo nl2br(htmlspecialchars($row['COMENTARIO']));
+                echo "</li>";
+            }
+            echo "</ul>";
+        }
+        ?>
 
     </main>
 
@@ -252,9 +334,15 @@ $premios = $stmt_premios->get_result();
 
     <script>
         const stars = document.querySelectorAll('.star-rating i');
+        const inputVoto = document.getElementById('voto');
+
         stars.forEach(star => {
             star.addEventListener('click', () => {
                 const value = parseInt(star.getAttribute('data-value'));
+
+                // Actualizar el input oculto con el valor seleccionado
+                inputVoto.value = value;
+
                 stars.forEach(s => {
                     if (parseInt(s.getAttribute('data-value')) <= value) {
                         s.classList.remove('bi-star');
@@ -265,6 +353,13 @@ $premios = $stmt_premios->get_result();
                     }
                 });
             });
+        });
+
+        document.getElementById('form-voto').addEventListener('submit', function(e) {
+            if (inputVoto.value == 0) {
+                e.preventDefault();
+                alert('Por favor, selecciona una cantidad de estrellas para votar.');
+            }
         });
     </script>
 </body>

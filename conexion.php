@@ -1,9 +1,12 @@
-<?php 
-    $mysqli = new mysqli("localhost", "root","","cinedb");
-    if($mysqli->connect_errno) {
-        echo  "<p>Fallo al conectar a MySQL: (",$mysqli->connect_errno, ") ",$mysqli->connect_error," </p>";
-    } /*
-    else {
-            echo "<p>Conexión realizada con éxito</p>";
-    } */
+<?php
+$servername = "localhost";
+$username = "root";
+$password = ""; // tu contraseña, si la tienes
+$dbname = "cinedb";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
 ?>
