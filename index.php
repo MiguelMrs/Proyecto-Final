@@ -110,11 +110,11 @@ $resultado = $mysqli->query($sql);
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <div class="col-6 col-md-4 mb-4">
                     <div class="card h-100 shadow">
-                        <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>">
+                         <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>"> <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>"></a>
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
                             <div class="mb-2">
-                                <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span><br>
+                                <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span>
                                 <span class="badge bg-secondary"> <?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
                             </div>
                             <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
@@ -123,7 +123,7 @@ $resultado = $mysqli->query($sql);
                                     <i class="bi bi-star-fill text-warning"></i>
                                     <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
                                 </div>
-                                <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-outline-dark">Ver detalles</a>
+                                <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-warning">Ver detalles</a>
                             </div>
                         </div>
                     </div>

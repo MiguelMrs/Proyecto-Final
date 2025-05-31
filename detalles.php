@@ -1,9 +1,57 @@
 <?php
 require 'conexion.php';
+$id_peli = isset($_GET['id_peli']) ? intval($_GET['id_peli']) : 0;
+if ($id_peli <= 0) {
+    die("Película no encontrada");
+    exit;
+}
+$stmt = $mysqli->prepare("SELECT * FROM peliculas WHERE id_peli = ?");
+$stmt->bind_param("i", $id_peli);  // "i" = integer
+$stmt->execute();
+$resultado = $stmt->get_result();
+
 $id_peli = $_GET['id_peli'];
-$sql = "SELECT * FROM peliculas where id_peli = $id_peli";
-$resultado = $mysqli->query($sql);
+
+// Obtener detalles de la película
+$stmt = $mysqli->prepare("
+    SELECT 
+        p.titulo, p.FECHA_ESTRENO, p.duracion, p.calificacion, 
+        p.presupuesto, p.total_taquilla, p.IMAGEN, p.biografia,
+        g.NOMBRE AS nombre_genero, 
+        d.nombre AS director
+    FROM peliculas p
+    JOIN genero g ON p.id_genero = g.id_genero
+    JOIN directores d ON p.id_director = d.id_director
+    WHERE p.id_peli = ?
+");
+$stmt->bind_param("i", $id_peli);
+$stmt->execute();
+$resultado = $stmt->get_result();
+$peli = $resultado->fetch_assoc();
+
+// Obtener actores
+$stmt_actores = $mysqli->prepare("
+    SELECT a.nombre, a.foto
+    FROM peliculas_actores r
+    JOIN actores a ON r.id_actor = a.id_actor
+    WHERE r.id_peli = ?
+");
+$stmt_actores->bind_param("i", $id_peli);
+$stmt_actores->execute();
+$actores = $stmt_actores->get_result();
+
+// Obtener premios
+$stmt_premios = $mysqli->prepare("
+    SELECT id_peli, Nombre_premio, ano
+    FROM premio
+    WHERE id_peli = ?
+");
+$stmt_premios->bind_param("i", $id_peli);
+$stmt_premios->execute();
+$premios = $stmt_premios->get_result();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -108,81 +156,51 @@ $resultado = $mysqli->query($sql);
         }
     </style>
     <main class="container my-5">
-        <h1 class="text-center mb-4">Dune: Parte Dos</h1>
+        <h1 class="text-center mb-4"><?php echo htmlspecialchars($peli['titulo']); ?></h1>
 
         <div class="row">
             <div class="col-md-4">
-                <img src="./Imagenes/Dune.jpg" class="img-fluid rounded shadow" alt="Dune: Parte Dos">
+                <img src="<?php echo $peli['IMAGEN']; ?>" class="img-fluid rounded shadow" alt="<?php echo htmlspecialchars($peli['titulo']); ?>">
             </div>
-            <div class="col-md-8">
-                <h5>
-                    Género:
-                    <span class="badge bg-warning text-dark">Ciencia Ficción</span>
-                </h5>
-                <h5>Año: 2024</h5>
-                <h5>Duración: 166 min</h5>
-                <h5>Calificación: 4.8/5 <i class="bi bi-star-fill text-warning"></i></h5>
-                <h5>Presupuesto: $190,000,000</h5>
-                <h5>Recaudación total: $700,000,000</h5>
-                <p class="mt-3"><strong>Biografía:</strong> La épica continuación del viaje de Paul Atreides mientras se une a los Fremen en su lucha contra los conspiradores que destruyeron a su familia.</p>
+
+            <div class="col-md-8 mt-3">
+                <h5><span class="fw-bold">Género:</span> <span class="badge bg-warning text-dark"><?php echo htmlspecialchars($peli['nombre_genero']); ?></span></h5>
+                <h5><span class="fw-bold">Año: </span><?php echo htmlspecialchars($peli['FECHA_ESTRENO']); ?></h5>
+                <h5><span class="fw-bold">Duración: </span><?php echo htmlspecialchars($peli['duracion']); ?> min</h5>
+                <h5><span class="fw-bold">Calificación: </span><?php echo htmlspecialchars($peli['calificacion']); ?>/5 <i class="bi bi-star-fill text-warning"></i></h5>
+                <h5><span class="fw-bold">Presupuesto:</span> <?php echo number_format($peli['presupuesto'], 0, ',', '.'); ?> €</h5>
+                <h5><span class="fw-bold">Recaudación total:</span> <?php echo number_format($peli['total_taquilla'], 0, ',', '.'); ?> €</h5>
+                <h5><span class="fw-bold">Biografía:</span> <?php echo htmlspecialchars($peli['biografia']); ?></h5>
+                <h5><span class="fw-bold">Director:</span> <?php echo htmlspecialchars($peli['director']); ?></h5>
             </div>
         </div>
 
         <hr>
 
         <h3 class="mt-5">Actores que participan</h3>
-
         <div class="container my-4">
             <h4>Reparto</h4>
             <div class="position-relative">
                 <div class="d-flex overflow-auto" style="scroll-snap-type: x mandatory;">
-                    <div class="me-3 text-center" style="scroll-snap-align: start;">
-                        <img src="./Imagenes/actor1.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
-                        <div>David Bradley</div>
-                    </div>
-                    <div class="me-3 text-center" style="scroll-snap-align: start;">
-                        <img src="./Imagenes/actor2.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
-                        <div>Lars Mikkelsen</div>
-                    </div>
-                    <div class="me-3 text-center" style="scroll-snap-align: start;">
-                        <img src="./Imagenes/actor3.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
-                        <div>Christian Convery</div>
-                    </div>
-                    <div class="me-3 text-center" style="scroll-snap-align: start;">
-                        <img src="./Imagenes/actor4.jpg" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
-                        <div>Sofia Galasso</div>
-                    </div>
-
+                    <?php while ($actor = $actores->fetch_assoc()): ?>
+                        <div class="me-3 text-center" style="scroll-snap-align: start;">
+                            <img src="./Imagenes/<?php echo htmlspecialchars($actor['foto']); ?>" class="rounded" style="width: 100px; height: 140px; object-fit: cover;">
+                            <div><?php echo htmlspecialchars($actor['nombre']); ?></div>
+                        </div>
+                    <?php endwhile; ?>
                 </div>
             </div>
         </div>
+
         <hr>
+
         <h3>Premios obtenidos</h3>
         <ul>
-            <li>Oscar a Mejores Efectos Visuales (2024)</li>
-            <li>BAFTA a Mejor Dirección (2024)</li>
+            <?php while ($premio = $premios->fetch_assoc()): ?>
+                <li><?php echo htmlspecialchars($premio['nombre_premio']); ?> (<?php echo $premio['año']; ?>)</li>
+            <?php endwhile; ?>
         </ul>
-        <hr class="my-4">
-        <h4>Vota esta película</h4>
-        <div class="star-rating mb-3">
-            <i class="bi bi-star" data-value="1"></i>
-            <i class="bi bi-star" data-value="2"></i>
-            <i class="bi bi-star" data-value="3"></i>
-            <i class="bi bi-star" data-value="4"></i>
-            <i class="bi bi-star" data-value="5"></i>
-        </div>
 
-        <div class="mb-3">
-            <label for="comentario" class="form-label">Tu comentario</label>
-            <textarea class="form-control" id="comentario" rows="3" placeholder="Escribe tu opinión..."></textarea>
-        </div>
-        <button class="btn btn-primary">Enviar Voto</button>
-
-        <div>
-            <a href="index.html" class="btn btn-primary mt-4">
-                <i class="bi bi-arrow-left"></i> Volver al listado
-            </a>
-        </div>
     </main>
 
     <footer class="bg-dark text-white pt-4 pb-2">
