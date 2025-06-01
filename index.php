@@ -7,7 +7,7 @@ LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO;";
 
 ;
 
-$resultado = $mysqli->query($sql);
+$resultado = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
