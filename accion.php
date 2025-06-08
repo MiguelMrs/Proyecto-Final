@@ -28,7 +28,7 @@ $resultado = $conn->query($sql);
 </head>
 
 <body>
-    <header class="cine-header">
+    <header class="fixed-top cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -59,12 +59,12 @@ $resultado = $conn->query($sql);
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
+                        <form action="buscar.php" method="get" class="input-group">
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar películas" required>
+                            <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,7 @@ $resultado = $conn->query($sql);
                         <li class="nav-item">
                             <a class="nav-link categoria-cine" href="premios.php"><i class="bi bi-trophy"></i> Premios</a>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>
@@ -184,8 +184,6 @@ $resultado = $conn->query($sql);
             </div>
         </div>
     </footer>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

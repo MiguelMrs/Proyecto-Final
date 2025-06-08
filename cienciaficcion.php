@@ -5,9 +5,7 @@ $sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO,
 YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
 FROM PELICULAS
 LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO
-where GENERO.ID_GENERO = 3;";
-
-;
+where GENERO.ID_GENERO = 3;";;
 
 $resultado = $conn->query($sql);
 ?>
@@ -30,7 +28,7 @@ $resultado = $conn->query($sql);
 </head>
 
 <body>
-    <header class="cine-header">
+    <header class="fixed-top cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -41,7 +39,7 @@ $resultado = $conn->query($sql);
                             <img src="./Imagenes/Logo_negro.png" alt="Logo" class="img-fluid" style="max-height: 60px;">
                         </a>
                     </div>
- <!-- Botones de inicio de sesión -->
+                    <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
                         <?php if (isset($_SESSION['usuario_nombre'])): ?> <!--si no ha iniciado sesion no aparece nada-->
                             <span class="text-white fw-semibold">
@@ -61,12 +59,12 @@ $resultado = $conn->query($sql);
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
+                        <form action="buscar.php" method="get" class="input-group">
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar películas" required>
+                            <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -117,7 +115,7 @@ $resultado = $conn->query($sql);
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <div class="col-6 col-md-4 mb-4">
                     <div class="card h-100 shadow">
-                         <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>"> <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>"></a>
+                        <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>"> <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>"></a>
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
                             <div class="mb-2">

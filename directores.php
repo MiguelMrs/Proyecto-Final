@@ -25,7 +25,7 @@ $resultado = mysqli_query($conn, $query);
 
 <body>
 
-    <header class="cine-header ">
+    <header class="fixed-top cine-header ">
         <div class="container py-2">
             <div class="row align-items-center">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -36,7 +36,7 @@ $resultado = mysqli_query($conn, $query);
                             <img src="./Imagenes/Logo_negro.png" alt="Logo" class="img-fluid" style="max-height: 60px;">
                         </a>
                     </div>
-                 <!-- Botones de inicio de sesión -->
+                    <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
                         <?php if (isset($_SESSION['usuario_nombre'])): ?> <!--si no ha iniciado sesion no aparece nada-->
                             <span class="text-white fw-semibold">
@@ -104,7 +104,7 @@ $resultado = mysqli_query($conn, $query);
         </nav>
     </header>
 
-   <div class="container mt-4 mb-4">
+    <main class="container my-5">
         <h1 class="text-center mb-4">Directores Destacados</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php while ($director = mysqli_fetch_assoc($resultado)) : ?>
@@ -115,14 +115,13 @@ $resultado = mysqli_query($conn, $query);
                             <h5 class="card-title"><?= htmlspecialchars($director['nombre']) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($director['apellido']) ?></p>
                             <p class="card-text"><?= htmlspecialchars($director['biografia']) ?></p>
-                            <p class="card-text"><small class="text-muted">Fecha de nacimiento: <?= htmlspecialchars($director['fecha_nac'] ?? 'Sin datos') ?></small></p> 
+                            <p class="card-text"><small class="text-muted">Fecha de nacimiento: <?= htmlspecialchars($director['fecha_nac'] ?? 'Sin datos') ?></small></p>
                         </div>
                     </div>
                 </div>
             <?php endwhile; ?>
         </div>
-    </div>
-</div>
+    </main>
     <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
             <div class="row">

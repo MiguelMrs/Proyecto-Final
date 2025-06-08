@@ -27,7 +27,7 @@ $resultado = $conn->query($sql);
 </head>
 
 <body>
-    <header class="cine-header">
+    <header class="fixed-top cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -60,7 +60,7 @@ $resultado = $conn->query($sql);
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
                         <form action="buscar.php" method="get" class="input-group">
-                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar películas..." required>
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar películas" required>
                             <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>

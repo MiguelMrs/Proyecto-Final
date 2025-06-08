@@ -32,7 +32,7 @@ $resultado = $conn->query($sql);
 </head>
 
 <body>
-    <header class="cine-header">
+    <header class="fixed-top cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -62,15 +62,7 @@ $resultado = $conn->query($sql);
                             </a>
                         <?php endif; ?>
                     </div>
-                    <!-- Barra de búsqueda -->
-                    <div class="col-8 col-sm-5 order-sm-1">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <h1>Premios</h1>
                 </div>
             </div>
         </div>

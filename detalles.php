@@ -74,7 +74,7 @@ $premios = $stmt_premios->get_result();
 </head>
 
 <body>
-    <header class="cine-header">
+    <header class="fixed-top cine-header">
         <div class="container py-2">
             <div class="row align-items-center">
                 <div class="col-12 d-flex flex-column flex-sm-row align-items-center justify-content-between order-sm-1 gap-2">
@@ -105,12 +105,12 @@ $premios = $stmt_premios->get_result();
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button">
+                        <form action="buscar.php" method="get" class="input-group">
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar películas" required>
+                            <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -275,7 +275,7 @@ $premios = $stmt_premios->get_result();
                         <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Escribe tu opinión..." required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Enviar Voto</button>
+                    <button type="submit" class="btn btn-votar btn-primary">Enviar Voto</button>
                 </form>
             <?php else: ?>
                 <div class="alert alert-info mt-4">

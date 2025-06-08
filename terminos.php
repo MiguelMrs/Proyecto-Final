@@ -3,8 +3,9 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineRate</title>
     <link rel="icon" href="./Imagenes/Logo_fondo_blanco.png" type="image/x-icon">
@@ -14,8 +15,9 @@ session_start();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="header.css" type="text/css">
 </head>
+
 <body>
-<header class="cine-header">
+    <header class="fixed-top cine-header">
         <div class="container py-2">
             <div class="row align-items-center ">
                 <!--Contenedor que engloba el logo, buscador, botones-->
@@ -27,7 +29,7 @@ session_start();
                         </a>
                     </div>
 
-                     <!-- Botones de inicio de sesión -->
+                    <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
                         <?php if (isset($_SESSION['usuario_nombre'])): ?> <!--si no ha iniciado sesion no aparece nada-->
                             <span class="text-white fw-semibold">
@@ -45,15 +47,7 @@ session_start();
                             </a>
                         <?php endif; ?>
                     </div>
-                    <!-- Barra de búsqueda -->
-                    <div class="col-8 col-sm-5 order-sm-1">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <h1>TERMINOS</h1>
                 </div>
             </div>
         </div>
@@ -94,7 +88,7 @@ session_start();
             </div>
         </nav>
     </header>
-    <div class="container">
+  <main class="container my-5">
         <h1>Condiciones de Uso</h1>
         <p>Bienvenido a nuestra Biblioteca de Cine en línea. Al acceder y utilizar este sitio web, aceptas cumplir con las siguientes condiciones de uso. Si no estás de acuerdo con estos términos, te recomendamos que no utilices este sitio.</p>
 
@@ -131,8 +125,9 @@ session_start();
 
         <h2>10. Ley aplicable y jurisdicción</h2>
         <p>Estas condiciones de uso se regirán e interpretarán de acuerdo con las leyes del país en el que operamos. Cualquier disputa relacionada con el uso de este sitio se someterá a la jurisdicción exclusiva de los tribunales competentes en dicho país.</p>
-        </div>
-        <footer class="bg-dark text-white pt-4 pb-2">
+    </div>
+  </main>
+    <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
             <div class="row">
                 <!-- Géneros -->
@@ -177,7 +172,8 @@ session_start();
         </div>
 
     </footer>
-   
+
 
 </body>
+
 </html>
