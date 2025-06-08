@@ -106,9 +106,6 @@ $resultado = $conn->query($sql);
                         <li class="nav-item">
                             <a class="nav-link categoria-cine" href="premios.php"><i class="bi bi-trophy"></i> Premios</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link categoria-cine" href="comentarios.php"><i class="bi bi-chat-left-text"></i> Comentarios</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -119,7 +116,7 @@ $resultado = $conn->query($sql);
 
 
     <main class="container my-5">
-        <h2 class="text-center mb-4">Películas Premiadas</h2>
+       <h1 class="text-center mb-4">Películas Premiadas</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php
             if ($resultado && $resultado->num_rows > 0) {

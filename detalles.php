@@ -147,9 +147,6 @@ $premios = $stmt_premios->get_result();
                         <li class="nav-item">
                             <a class="nav-link categoria-cine" href="premios.php"><i class="bi bi-trophy"></i> Premios</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link categoria-cine" href="comentarios.php"><i class="bi bi-chat-left-text"></i> Comentarios</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -181,13 +178,13 @@ $premios = $stmt_premios->get_result();
         <h3 class="mt-5">Actores que participan</h3>
         <div class="container my-4">
             <h4>Reparto</h4>
-            <div class="position-relative">
+            <div class="position-relative ">
                 <?php if ($actores->num_rows > 0): ?>
                     <div class="d-flex overflow-auto pb-3" style="scroll-snap-type: x mandatory;">
                         <?php while ($actor = $actores->fetch_assoc()): ?>
-                            <div class="text-center" style="min-width: 100px; scroll-snap-align: start;">
+                            <div class="text-center mx-2" style="min-width: 100px; scroll-snap-align: start; ">
                                 <img src="./Imagenes/<?php echo htmlspecialchars($actor['foto']); ?>"
-                                    class="rounded mb-2"
+                                    class="rounded mb-2 mx-3"
                                     alt="<?php echo htmlspecialchars($actor['nombre']); ?>"
                                     style="width: 100px; height: 140px; object-fit: cover;">
                                 <div class="small"><?php echo htmlspecialchars($actor['nombre']); ?></div>
@@ -263,7 +260,6 @@ $premios = $stmt_premios->get_result();
                 <h3>Vota y comenta</h3>
                 <form action="guardar_voto.php" method="post" id="form-voto">
                     <input type="hidden" name="id_peli" value="<?php echo htmlspecialchars($id_peli); ?>">
-                <input type="hidden" name="id_user" value="<?php echo htmlspecialchars($_SESSION['usuario_id']); ?>" >
                     <input type="hidden" name="voto" id="voto" value="0">
 
                     <div class="star-rating mb-3">
@@ -341,23 +337,28 @@ $premios = $stmt_premios->get_result();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        const stars = document.querySelectorAll('.star-rating i');
-        const inputVoto = document.getElementById('voto');
+        const stars = document.querySelectorAll('.star-rating i'); // 1. Busca todos los iconos de estrellas dentro del contenedor con clase "star-rating"
+        const inputVoto = document.getElementById('voto'); // 2. Busca el campo oculto donde guardaremos el número de estrellas seleccionadas
 
+        // 3. Por cada estrella encontrada, le agregamos un evento para cuando hagas clic en ella
         stars.forEach(star => {
             star.addEventListener('click', () => {
+                // 4. Al hacer clic, sacamos el número que tiene esa estrella (ejemplo: 1, 2, 3, 4 o 5)
                 const value = parseInt(star.getAttribute('data-value'));
 
-                // Actualizar el input oculto con el valor seleccionado
+                // 5. Guardamos ese número en el campo oculto para enviar después en el formulario
                 inputVoto.value = value;
 
+                // 6. Ahora, actualizamos la apariencia de todas las estrellas:
                 stars.forEach(s => {
                     if (parseInt(s.getAttribute('data-value')) <= value) {
-                        s.classList.remove('bi-star');
-                        s.classList.add('bi-star-fill', 'text-warning');
+                        // 7. Si la estrella está dentro del rango seleccionado, la pintamos como estrella llena y amarilla
+                        s.classList.remove('bi-star'); // Quitamos estrella vacía
+                        s.classList.add('bi-star-fill', 'text-warning'); // Ponemos estrella llena y amarilla
                     } else {
-                        s.classList.remove('bi-star-fill', 'text-warning');
-                        s.classList.add('bi-star');
+                        // 8. Si la estrella está fuera del rango seleccionado, la dejamos vacía y sin color
+                        s.classList.remove('bi-star-fill', 'text-warning'); // Quitamos estrella llena y color
+                        s.classList.add('bi-star'); // Ponemos estrella vacía
                     }
                 });
             });

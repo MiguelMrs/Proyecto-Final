@@ -25,9 +25,9 @@ $resultado = mysqli_query($conn, $query);
 
 <body>
 
-    <header class="cine-header">
+    <header class="cine-header ">
         <div class="container py-2">
-            <div class="row align-items-center ">
+            <div class="row align-items-center">
                 <!--Contenedor que engloba el logo, buscador, botones-->
                 <div class="col-12 d-flex flex-column flex-sm-row align-items-center justify-content-between order-sm-1 gap-2">
                     <!-- Logo -->
@@ -36,7 +36,7 @@ $resultado = mysqli_query($conn, $query);
                             <img src="./Imagenes/Logo_negro.png" alt="Logo" class="img-fluid" style="max-height: 60px;">
                         </a>
                     </div>
- <!-- Botones de inicio de sesión -->
+                 <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
                         <?php if (isset($_SESSION['usuario_nombre'])): ?> <!--si no ha iniciado sesion no aparece nada-->
                             <span class="text-white fw-semibold">
@@ -56,12 +56,12 @@ $resultado = mysqli_query($conn, $query);
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
+                        <form action="buscar_actores.php" method="get" class="input-group">
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar actores..." required>
+                            <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -98,9 +98,7 @@ $resultado = mysqli_query($conn, $query);
                         <li class="nav-item">
                             <a class="nav-link categoria-cine" href="premios.php"><i class="bi bi-trophy"></i> Premios</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link categoria-cine" href="comentarios.php"><i class="bi bi-chat-left-text"></i> Comentarios</a>
-                        </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -117,7 +115,8 @@ $resultado = mysqli_query($conn, $query);
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($actor['nombre']) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($actor['apellido']) ?></p>
-                            <a href="<?= htmlspecialchars($actor['biografia_url']) ?>" class="btn btn-sm btn-outline-dark">Ver biografía</a>
+                            <p class="card-text"><?= htmlspecialchars($actor['biografia']) ?></p>
+                            <p class="card-text"><small class="text-muted">Fecha de nacimiento: <?= htmlspecialchars($actor['fecha_nac'] ?? 'Sin datos') ?></small></p>
                         </div>
                     </div>
                 </div>

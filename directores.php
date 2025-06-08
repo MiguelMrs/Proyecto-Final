@@ -1,17 +1,13 @@
 <?php
+
 session_start();
-require 'conexion.php';
-$sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO, 
-YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
-FROM PELICULAS
-LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO
-where GENERO.ID_GENERO = 7;";
+// Conexión a la base de datos
+include 'conexion.php';
 
-;
-
-$resultado = $conn->query($sql);
+// Consulta de directores destacados
+$query = "SELECT nombre, apellido, fecha_nac, biografia, foto FROM directores ORDER BY id_director asc";
+$resultado = mysqli_query($conn, $query);
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -25,14 +21,13 @@ $resultado = $conn->query($sql);
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="header.css" type="text/css">
-
-
 </head>
 
 <body>
-    <header class="cine-header">
+
+    <header class="cine-header ">
         <div class="container py-2">
-            <div class="row align-items-center ">
+            <div class="row align-items-center">
                 <!--Contenedor que engloba el logo, buscador, botones-->
                 <div class="col-12 d-flex flex-column flex-sm-row align-items-center justify-content-between order-sm-1 gap-2">
                     <!-- Logo -->
@@ -41,8 +36,7 @@ $resultado = $conn->query($sql);
                             <img src="./Imagenes/Logo_negro.png" alt="Logo" class="img-fluid" style="max-height: 60px;">
                         </a>
                     </div>
-
-                   <!-- Botones de inicio de sesión -->
+                 <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
                         <?php if (isset($_SESSION['usuario_nombre'])): ?> <!--si no ha iniciado sesion no aparece nada-->
                             <span class="text-white fw-semibold">
@@ -62,12 +56,12 @@ $resultado = $conn->query($sql);
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
-                        <div class="input-group">
-                            <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
+                        <form action="buscar_directores.php" method="get" class="input-group">
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar directores..." required>
+                            <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -96,7 +90,7 @@ $resultado = $conn->query($sql);
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link categoria-cine" href="actores.php"><i class="bi bi-people"></i> Actores</a>
+                            <a class="nav-link categoria-cine" href="Actores.php"><i class="bi bi-people"></i> Actores</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link categoria-cine" href="directores.php"><i class="bi bi-camera-reels"></i> Directores</a>
@@ -109,39 +103,26 @@ $resultado = $conn->query($sql);
             </div>
         </nav>
     </header>
-    <!-- Fin del header -->
 
-    <!-- Contenido principal -->
-    <main class="container my-5">
-        <h1 class="text-center mb-4">Películas de Terror</h1>
+   <div class="container mt-4 mb-4">
+        <h1 class="text-center mb-4">Directores Destacados</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <div class="col-6 col-md-4 mb-4">
-                    <div class="card h-100 shadow">
-                         <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>"> <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>"></a>
+            <?php while ($director = mysqli_fetch_assoc($resultado)) : ?>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="./Imagenes/<?= htmlspecialchars($director['foto']) ?>" class="card-img-top object-fit-cover" alt="<?= htmlspecialchars($director['nombre']) ?>">
                         <div class="card-body">
-                            <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
-                            <div class="mb-2">
-                                <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span>
-                                <span class="badge bg-secondary"> <?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
-                            </div>
-                            <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="rating">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
-                                </div>
-                                <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-warning">Ver detalles</a>
-                            </div>
+                            <h5 class="card-title"><?= htmlspecialchars($director['nombre']) ?></h5>
+                            <p class="card-text"><?= htmlspecialchars($director['apellido']) ?></p>
+                            <p class="card-text"><?= htmlspecialchars($director['biografia']) ?></p>
+                            <p class="card-text"><small class="text-muted">Fecha de nacimiento: <?= htmlspecialchars($director['fecha_nac'] ?? 'Sin datos') ?></small></p> 
                         </div>
                     </div>
                 </div>
-            <?php } ?>
+            <?php endwhile; ?>
         </div>
-    </main>
-
-
-
+    </div>
+</div>
     <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
             <div class="row">
@@ -186,8 +167,6 @@ $resultado = $conn->query($sql);
             </div>
         </div>
     </footer>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
