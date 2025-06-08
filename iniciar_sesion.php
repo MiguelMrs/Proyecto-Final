@@ -40,14 +40,7 @@
                             <input type="password" class="form-control" id="password" name="password" required placeholder="••••••••">
                         </div>
                     </div>
-                    
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="remember">
-                            <label class="form-check-label" for="remember">Recuérdame</label>
-                        </div>
-                        <a href="recuperar.php" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
-                    </div>
+                
                     
                     <button type="submit" class="btn btn-cine w-100 mb-3">Iniciar Sesión</button>
                     

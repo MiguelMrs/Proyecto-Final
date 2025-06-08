@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'conexion.php';
 $sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO, 
 YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
@@ -41,14 +42,23 @@ $resultado = $conn->query($sql);
                         </a>
                     </div>
 
-                    <!-- Botones de inicio de sesión -->
+                   <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
-                        <a href="iniciar_sesion.php" class="btn btn-sm btn-warning">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
-                        </a>
-                        <a href="registrar.php" class="btn btn-sm btn-warning">
-                            <i class="bi bi-person-plus"></i> Registrarse
-                        </a>
+                        <?php if (isset($_SESSION['usuario_nombre'])): ?> <!--si no ha iniciado sesion no aparece nada-->
+                            <span class="text-white fw-semibold">
+                                <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['usuario_nombre']) ?>
+                            </span>
+                            <a href="cerrar_sesion.php" class="btn btn-sm btn-outline-danger ms-2">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                            </a>
+                        <?php else: ?>
+                            <a href="iniciar_sesion.php" class="btn btn-sm btn-warning">
+                                <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                            </a>
+                            <a href="registrar.php" class="btn btn-sm btn-warning">
+                                <i class="bi bi-person-plus"></i> Registrarse
+                            </a>
+                        <?php endif; ?>
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">

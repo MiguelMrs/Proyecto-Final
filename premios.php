@@ -1,16 +1,18 @@
 <?php
 session_start();
-require 'conexion.php';
-$sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO, 
-YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
-FROM PELICULAS
-LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO
-where GENERO.ID_GENERO = 4;";
+// Conexión a la base de datos (asegúrate de incluir tu archivo de conexión)
+require_once 'conexion.php';
 
-;
+// Consulta SQL modificada para obtener solo películas con premios
+$sql = "SELECT DISTINCT p.*, g.NOMBRE AS NOMBRE_GENERO, 
+        YEAR(p.FECHA_ESTRENO) AS ANIO_ESTRENO
+        FROM peliculas p
+        JOIN genero g ON p.ID_GENERO = g.ID_GENERO
+        JOIN premio pr ON p.ID_PELI = pr.ID_PELI
+        ORDER BY p.TITULO";
 
 $resultado = $conn->query($sql);
-?>
+?>      
 
 <!DOCTYPE html>
 <html lang="es">
@@ -114,32 +116,45 @@ $resultado = $conn->query($sql);
     </header>
     <!-- Fin del header -->
 
-    <!-- Contenido principal -->
+
+
     <main class="container my-5">
-        <h2 class="text-center mb-4">Películas Destacadas</h2>
+        <h2 class="text-center mb-4">Películas Premiadas</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <div class="col-6 col-md-4 mb-4">
-                    <div class="card h-100 shadow">
-                         <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>"> <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>"></a>
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
-                            <div class="mb-2">
-                                <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span>
-                                <span class="badge bg-secondary"> <?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
-                            </div>
-                            <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="rating">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
+            <?php
+            if ($resultado && $resultado->num_rows > 0) {
+                while ($fila = $resultado->fetch_assoc()) {
+            ?>
+                    <div class="col-6 col-md-4 mb-4">
+                        <div class="card h-100 shadow">
+                            <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>">
+                                <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>" >
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
+                                <div class="mb-2">
+                                    <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span>
+                                    <span class="badge bg-secondary"><?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
                                 </div>
-                                <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-warning">Ver detalles</a>
+                                <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                        <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
+                                    </div>
+                                    <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-warning">Ver premios</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php } ?>
+            <?php
+                }
+            } else {
+                echo '<div class="col-12 text-center py-5">
+                    <h4 class="text-muted">No se encontraron películas premiadas</h4>
+                  </div>';
+            }
+            ?>
         </div>
     </main>
 

@@ -1,79 +1,90 @@
-<?php
-session_start(); 
-// Inicia la sesión de PHP para poder usar variables de sesión si fuera necesario.
+<<?php
+session_start();
+require 'conexion.php';
 
-require 'conexion.php'; 
-
-
-if (!isset($_SESSION['id_user'])) {
-    
-    echo "<a href='iniciar_sesion.php'>Iniciar sesión</a>";
-    exit;
-    header("Location: login.php");
-}
-
+// Verificar que el ID de usuario existe en la base de datos
 $id_user = $_SESSION['id_user'];
+$sql_check_user = "SELECT ID_USER FROM usuarios WHERE ID_USER = ?";
+$stmt_check_user = $conn->prepare($sql_check_user);
+$stmt_check_user->bind_param("i", $id_user);
+$stmt_check_user->execute();
+$result_check_user = $stmt_check_user->get_result();
 
-$id_peli = intval($_POST['id_peli'] ?? 0); // Si no existe, usa 0 como valor por defecto. Se convierte a entero para evitar inyección.
-
-$calificacion = intval($_POST['voto'] ?? 0); 
-// Recoge el valor enviado por POST del campo 'voto' (la calificación o estrellas que dio el usuario).
-// Si no existe, asigna 0. También se convierte a entero.
-
-$comentario = trim($_POST['comentario'] ?? ''); 
-// Recoge el comentario enviado por POST.
-// Si no existe, queda como cadena vacía.
-// La función trim() elimina espacios en blanco al inicio y al final del texto.
-
-if ($id_peli <= 0 || $calificacion < 1 || $calificacion > 5) {
-    die('Datos inválidos.');
+if ($result_check_user->num_rows === 0) {
+    session_destroy(); // Destruir sesión si el usuario no existe
+    $_SESSION['error'] = 'Tu cuenta ya no existe. Por favor, inicia sesión nuevamente.';
+    header("Location: iniciar_sesion.php");
+    exit;
 }
-// Validación básica:
-// Si el id de la película es 0 o negativo, o la calificación es menor que 1 o mayor que 5,
-// termina la ejecución y muestra el mensaje 'Datos inválidos.'
 
-// Fecha actual
-$fecha_comentario = date('Y-m-d'); 
-// Obtiene la fecha actual en formato 'Año-Mes-Día' para guardar la fecha del comentario.
+$id_peli = intval($_POST['id_peli'] ?? 0);
+$calificacion = intval($_POST['voto'] ?? 0);
+$comentario = trim($_POST['comentario'] ?? '');
 
+// Validaciones
+if ($id_peli <= 0) {
+    $_SESSION['error'] = 'Película no válida';
+    header("Location: index.php");
+    exit;
+}
 
-// Preparar la consulta SQL para insertar el voto y comentario en la tabla 'comentarios'
-$sql = "INSERT INTO comentarios (ID_PELI, CALIFICACION, COMENTARIO, FECHA_COMENTARIO)
-        VALUES (?, ?, ?, ?)";
+if ($calificacion < 1 || $calificacion > 5) {
+    $_SESSION['error'] = 'La calificación debe estar entre 1 y 5 estrellas';
+    header("Location: detalles.php?id_peli=" . $id_peli);
+    exit;
+}
 
-$stmt = $conn->prepare($sql); 
-// Prepara la consulta para evitar inyección SQL, usando placeholders '?'
+if (empty($comentario)) {
+    $_SESSION['error'] = 'El comentario no puede estar vacío';
+    header("Location: detalles.php?id_peli=" . $id_peli);
+    exit;
+}
 
-$stmt->bind_param("iiss", $id_peli, $calificacion, $comentario, $fecha_comentario); 
-// Asocia los valores a los placeholders:
-// "iiss" indica que los dos primeros parámetros son enteros (integer) y los dos últimos son cadenas (string).
-// $id_peli, $calificacion, $comentario y $fecha_comentario se enlazan en ese orden.
+// Verificar si el usuario ya comentó esta película
+$sql_check = "SELECT ID_COMENT FROM comentarios WHERE ID_PELI = ? AND ID_USER = ?";
+$stmt_check = $conn->prepare($sql_check);
+$stmt_check->bind_param("ii", $id_peli, $id_user);
+$stmt_check->execute();
+$result_check = $stmt_check->get_result();
 
-if ($stmt->execute()) { 
-    // Si la ejecución del insert fue correcta...
+if ($result_check->num_rows > 0) {
+    $_SESSION['error'] = 'Ya has comentado esta película';
+    header("Location: detalles.php?id_peli=" . $id_peli);
+    exit;
+}
 
-    // Preparar consulta para obtener la media de calificaciones para esa película
+// Insertar el nuevo comentario
+$fecha_comentario = date('Y-m-d');
+$sql = "INSERT INTO comentarios (ID_PELI, ID_USER, CALIFICACION, COMENTARIO, FECHA_COMENTARIO)
+        VALUES (?, ?, ?, ?, ?)";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iiiss", $id_peli, $id_user, $calificacion, $comentario, $fecha_comentario);
+
+if ($stmt->execute()) {
+    // Actualizar calificación promedio de la película
     $sql_avg = "SELECT AVG(CALIFICACION) as promedio FROM comentarios WHERE ID_PELI = ?";
-    $stmt_avg = $conn->prepare($sql_avg);  // Prepara la consulta para evitar inyección SQL
-    $stmt_avg->bind_param("i", $id_peli);   // Asocia el id de la película al placeholder
-    $stmt_avg->execute(); // Ejecuta la consulta
+    $stmt_avg = $conn->prepare($sql_avg);
+    $stmt_avg->bind_param("i", $id_peli);
+    $stmt_avg->execute();
     
-
-    $resultado = $stmt_avg->get_result();     // Obtiene el resultado de la consulta
-    $row = $resultado->fetch_assoc();   // Obtiene la fila como un array asociativo
+    $resultado = $stmt_avg->get_result();
+    $row = $resultado->fetch_assoc();
     
-    $promedio = round($row['promedio'], 1);  // Redondea la media a 1 decimal
-    $sql_update = "UPDATE peliculas SET CALIFICACION = ? WHERE ID_PELI = ?";  // Preparar consulta para actualizar la calificación promedio en la tabla 'peliculas'
-    $stmt_update = $conn->prepare($sql_update);    // Prepara la consulta para actualización
- 
-
-    $stmt_update->bind_param("di", $promedio, $id_peli);  // Asocia los parámetros: 'd' para decimal (float) y 'i' para entero
-
-   
-    $stmt_update->execute(); // Ejecuta la actualización
-    header("Location: detalles.php?id_peli=" . $id_peli); 
-
+    $promedio = round($row['promedio'], 1);
+    
+    $sql_update = "UPDATE peliculas SET CALIFICACION = ? WHERE ID_PELI = ?";
+    $stmt_update = $conn->prepare($sql_update);
+    $stmt_update->bind_param("di", $promedio, $id_peli);
+    $stmt_update->execute();
+    
+    $_SESSION['mensaje'] = '¡Gracias por tu comentario!';
 } else {
-    // Si hubo un error al insertar el comentario, muestra el mensaje de error.
-    echo "Error al guardar el comentario: " . $stmt->error;
+    $_SESSION['error'] = "Error al guardar el comentario. Por favor, inténtalo nuevamente.";
+    // Opcional: registrar el error real para diagnóstico
+    error_log("Error al guardar comentario: " . $stmt->error);
 }
+
+header("Location: detalles.php?id_peli=" . $id_peli);
+exit;
+?>

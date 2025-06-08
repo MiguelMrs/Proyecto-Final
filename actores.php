@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+// Conexión a la base de datos
+include 'conexion.php';
+
+// Consulta de actores destacados
+$query = "SELECT nombre, apellido, fecha_nac, biografia, foto FROM actores ORDER BY id_actor";
+$resultado = mysqli_query($conn, $query);
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -26,15 +36,23 @@
                             <img src="./Imagenes/Logo_negro.png" alt="Logo" class="img-fluid" style="max-height: 60px;">
                         </a>
                     </div>
-
-                    <!-- Botones de inicio de sesión -->
+ <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
-                        <a href="iniciar_sesion.php" class="btn btn-sm btn-warning">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
-                        </a>
-                        <a href="registrar.php" class="btn btn-sm btn-warning">
-                            <i class="bi bi-person-plus"></i> Registrarse
-                        </a>
+                        <?php if (isset($_SESSION['usuario_nombre'])): ?> <!--si no ha iniciado sesion no aparece nada-->
+                            <span class="text-white fw-semibold">
+                                <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['usuario_nombre']) ?>
+                            </span>
+                            <a href="cerrar_sesion.php" class="btn btn-sm btn-outline-danger ms-2">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                            </a>
+                        <?php else: ?>
+                            <a href="iniciar_sesion.php" class="btn btn-sm btn-warning">
+                                <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                            </a>
+                            <a href="registrar.php" class="btn btn-sm btn-warning">
+                                <i class="bi bi-person-plus"></i> Registrarse
+                            </a>
+                        <?php endif; ?>
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
@@ -89,74 +107,23 @@
         </nav>
     </header>
 
-<div class="container mt-4 mb-4">
-    <h1 class="text-center mb-4">Actores Destacados</h1>
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <img src="./Imagenes/actor1.jpg" class="card-img-top object-fit-cover" alt="Pedro Pérez">
-            <div class="card-body">
-                <h5 class="card-title">Pedro Pérez</h5>
-                <p class="card-text">Actor español conocido por sus papeles en drama y comedia. Activo desde 2010, ha participado en más de 20 películas.</p>
-                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
-            </div>
+   <div class="container mt-4 mb-4">
+        <h1 class="text-center mb-4">Actores Destacados</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <?php while ($actor = mysqli_fetch_assoc($resultado)) : ?>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="./imagenes/<?= htmlspecialchars($actor['foto']) ?>" class="card-img-top object-fit-cover" alt="<?= htmlspecialchars($actor['nombre']) ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($actor['nombre']) ?></h5>
+                            <p class="card-text"><?= htmlspecialchars($actor['apellido']) ?></p>
+                            <a href="<?= htmlspecialchars($actor['biografia_url']) ?>" class="btn btn-sm btn-outline-dark">Ver biografía</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile; ?>
         </div>
     </div>
-
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <img src="./Imagenes/actor2.jpg" class="card-img-top object-fit-cover" alt="María Gómez">
-            <div class="card-body">
-                <h5 class="card-title">María Gómez</h5>
-                <p class="card-text">Actriz reconocida por su versatilidad en películas de ciencia ficción y romance. Ganadora de 3 premios nacionales.</p>
-                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <img src="./Imagenes/actor3.jpg" class="card-img-top object-fit-cover" alt="Luis Fernández">
-            <div class="card-body">
-                <h5 class="card-title">Luis Fernández</h5>
-                <p class="card-text">Figura destacada del cine de acción, ganador de varios premios internacionales y protagonista de sagas populares.</p>
-                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <img src="./Imagenes/actor4.jpg" class="card-img-top object-fit-cover" alt="Sofía Martínez">
-            <div class="card-body">
-                <h5 class="card-title">Sofía Martínez</h5>
-                <p class="card-text">Joven promesa del cine independiente, destacada en cortometrajes y producciones internacionales.</p>
-                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <img src="./Imagenes/actor5.jpg" class="card-img-top object-fit-cover" alt="Javier Torres">
-            <div class="card-body">
-                <h5 class="card-title">Javier Torres</h5>
-                <p class="card-text">Veterano actor con más de 30 años de trayectoria en cine y televisión, maestro de la interpretación clásica.</p>
-                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <img src="./Imagenes/actor6.jpg" class="card-img-top object-fit-cover" alt="Carla Ruiz">
-            <div class="card-body">
-                <h5 class="card-title">Carla Ruiz</h5>
-                <p class="card-text">Actriz emergente especializada en teatro musical y series juveniles. Apasionada por la danza y el canto.</p>
-                <a href="#" class="btn btn-sm btn-outline-dark">Ver biografía</a>
-            </div>
-        </div>
-    </div>
-
 </div>
     <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">

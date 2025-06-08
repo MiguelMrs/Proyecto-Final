@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'conexion.php';
 
 $id_peli = isset($_GET['id_peli']) ? intval($_GET['id_peli']) : 0;
@@ -6,13 +7,6 @@ if ($id_peli <= 0) {
     die("Película no encontrada");
     exit;
 }
-
-$stmt = $conn->prepare("SELECT * FROM peliculas WHERE id_peli = ?");
-$stmt->bind_param("i", $id_peli);
-$stmt->execute();
-$resultado = $stmt->get_result();
-
-$id_peli = $_GET['id_peli'];
 
 // Obtener detalles de la película
 $stmt = $conn->prepare("
@@ -44,15 +38,13 @@ $actores = $stmt_actores->get_result();
 
 // Obtener premios
 $stmt_premios = $conn->prepare("
-    SELECT id_peli, Nombre_premio, ano
+    SELECT id_peli, nombre_premio, ano
     FROM premio
     WHERE id_peli = ?
 ");
 $stmt_premios->bind_param("i", $id_peli);
 $stmt_premios->execute();
 $premios = $stmt_premios->get_result();
-
-
 ?>
 
 <!DOCTYPE html>
@@ -68,15 +60,23 @@ $premios = $stmt_premios->get_result();
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="header.css" type="text/css">
+    <style>
+        .star-rating i {
+            font-size: 2rem;
+            color: gray;
+            cursor: pointer;
+        }
 
-
+        .star-rating i.selected {
+            color: gold;
+        }
+    </style>
 </head>
 
 <body>
-    <header class=" cine-header">
+    <header class="cine-header">
         <div class="container py-2">
-            <div class="row align-items-center ">
-                <!--Contenedor que engloba el logo, buscador, botones-->
+            <div class="row align-items-center">
                 <div class="col-12 d-flex flex-column flex-sm-row align-items-center justify-content-between order-sm-1 gap-2">
                     <!-- Logo -->
                     <div>
@@ -87,18 +87,27 @@ $premios = $stmt_premios->get_result();
 
                     <!-- Botones de inicio de sesión -->
                     <div class="d-flex flex-md-row align-items-center order-sm-2 gap-2">
-                        <a href="iniciar_sesion.php" class="btn btn-sm btn-warning">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
-                        </a>
-                        <a href="registrar.php" class="btn btn-sm btn-warning">
-                            <i class="bi bi-person-plus"></i> Registrarse
-                        </a>
+                        <?php if (isset($_SESSION['usuario_nombre'])): ?>
+                            <span class="text-white fw-semibold">
+                                <i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['usuario_nombre']) ?>
+                            </span>
+                            <a href="cerrar_sesion.php" class="btn btn-sm btn-outline-danger ms-2">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                            </a>
+                        <?php else: ?>
+                            <a href="iniciar_sesion.php" class="btn btn-sm btn-warning">
+                                <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                            </a>
+                            <a href="registrar.php" class="btn btn-sm btn-warning">
+                                <i class="bi bi-person-plus"></i> Registrarse
+                            </a>
+                        <?php endif; ?>
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
                         <div class="input-group">
                             <input type="text" class="form-control search-box" placeholder="Buscar películas, actores...">
-                            <button class="btn search-btn" type="button"> <!--Icono de buscar-->
+                            <button class="btn search-btn" type="button">
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
@@ -106,7 +115,7 @@ $premios = $stmt_premios->get_result();
                 </div>
             </div>
         </div>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark py-2"> <!--Categoria se combierte en icono desplazable-->
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark py-2">
             <div class="container">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#categoria-cine" aria-controls="navbarCine" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -147,17 +156,6 @@ $premios = $stmt_premios->get_result();
         </nav>
     </header>
 
-    <style>
-        .star-rating i {
-            font-size: 2rem;
-            color: gray;
-            cursor: pointer;
-        }
-
-        .star-rating i.selected {
-            color: gold;
-        }
-    </style>
     <main class="container my-5">
         <h1 class="text-center mb-4"><?php echo htmlspecialchars($peli['titulo']); ?></h1>
 
@@ -184,14 +182,21 @@ $premios = $stmt_premios->get_result();
         <div class="container my-4">
             <h4>Reparto</h4>
             <div class="position-relative">
-                <div class="d-flex overflow-auto" style="scroll-snap-type: x mandatory;">
-                    <?php while ($actor = $actores->fetch_assoc()): ?>
-                        <div class="me-3 text-center" style="scroll-snap-align: start;">
-                            <img src="./Imagenes/<?php echo htmlspecialchars($actor['foto']); ?>" class="rounded" alt="<?php echo htmlspecialchars($actor['nombre']); ?>" style="width: 100px; height: 140px; object-fit: cover;">
-                            <div><?php echo htmlspecialchars($actor['nombre']); ?></div>
-                        </div>
-                    <?php endwhile; ?>
-                </div>
+                <?php if ($actores->num_rows > 0): ?>
+                    <div class="d-flex overflow-auto pb-3" style="scroll-snap-type: x mandatory;">
+                        <?php while ($actor = $actores->fetch_assoc()): ?>
+                            <div class="text-center" style="min-width: 100px; scroll-snap-align: start;">
+                                <img src="./Imagenes/<?php echo htmlspecialchars($actor['foto']); ?>"
+                                    class="rounded mb-2"
+                                    alt="<?php echo htmlspecialchars($actor['nombre']); ?>"
+                                    style="width: 100px; height: 140px; object-fit: cover;">
+                                <div class="small"><?php echo htmlspecialchars($actor['nombre']); ?></div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                <?php else: ?>
+                    <p class="text-muted">No hay datos disponibles en estos momentos.</p>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -209,50 +214,14 @@ $premios = $stmt_premios->get_result();
         </ul>
 
         <hr>
-        <?php
-
-        $id_peli = intval($_GET['id_peli'] ?? 0);
-        if ($id_peli <= 0) {
-            echo "<p>Película no encontrada</p>";
-            exit;
-        }
-
-        // Verificamos si el usuario ya votó esta película mediante cookie
-        $voto_realizado = isset($_COOKIE["votado_peli_" . $id_peli]);
-
-        // Mostrar formulario solo si no ha votado
-        if (!$voto_realizado):
-        ?>
-
-            <hr>
-            <h3>Vota y comenta</h3>
-            <form action="guardar_voto.php" method="post" id="form-voto">
-                <input type="hidden" name="id_peli" value="<?php echo htmlspecialchars($id_peli); ?>">
-                <input type="hidden" name="voto" id="voto" value="0">
-
-                <div class="star-rating mb-3">
-                    <i class="bi bi-star" data-value="1"></i>
-                    <i class="bi bi-star" data-value="2"></i>
-                    <i class="bi bi-star" data-value="3"></i>
-                    <i class="bi bi-star" data-value="4"></i>
-                    <i class="bi bi-star" data-value="5"></i>
-                </div>
-
-                <div class="mb-3">
-                    <label for="comentario" class="form-label">Tu comentario</label>
-                    <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Escribe tu opinión..."></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Enviar Voto</button>
-            </form>
-
-        <?php else: ?>
-            <p><strong>Ya has votado esta película. ¡Gracias por tu participación!</strong></p>
-        <?php endif; ?>
 
         <?php
-        // Consulta para obtener comentarios de la película
-        $sql = "SELECT CALIFICACION, COMENTARIO, FECHA_COMENTARIO, ID_USER FROM comentarios WHERE ID_PELI = ? ORDER BY FECHA_COMENTARIO DESC";
+        // Consulta para obtener comentarios de la película con nombre de usuario
+        $sql = "SELECT c.CALIFICACION, c.COMENTARIO, c.FECHA_COMENTARIO, u.nombre AS usuario
+                FROM comentarios c
+                LEFT JOIN usuarios u ON c.ID_USER = u.ID_USER
+                WHERE c.ID_PELI = ? 
+                ORDER BY c.FECHA_COMENTARIO DESC";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id_peli);
         $stmt->execute();
@@ -268,10 +237,7 @@ $premios = $stmt_premios->get_result();
                 $estrellas = str_repeat('★', $row['CALIFICACION']) . str_repeat('☆', 5 - $row['CALIFICACION']);
 
                 // Nombre del usuario o anónimo
-                $usuario = 'Anónimo';
-                if (!empty($row['ID_USER'])) {
-                    $usuario = "Usuario #" . $row['ID_USER'];
-                }
+                $usuario = $row['usuario'] ?? 'Anónimo';
 
                 echo "<li class='list-group-item'>";
                 echo "<strong>$usuario</strong> <small>(" . $row['FECHA_COMENTARIO'] . ")</small><br>";
@@ -282,6 +248,49 @@ $premios = $stmt_premios->get_result();
             echo "</ul>";
         }
         ?>
+
+        <?php if (isset($_SESSION['usuario_id'])): ?>
+            <?php
+            // Verificar si el usuario ya votó esta película
+            $stmt_voto = $conn->prepare("SELECT ID_COMENT FROM comentarios WHERE ID_PELI = ? AND ID_USER = ?");
+            $stmt_voto->bind_param("ii", $id_peli, $_SESSION['usuario_id']);
+            $stmt_voto->execute();
+            $result_voto = $stmt_voto->get_result();
+
+            if ($result_voto->num_rows == 0):
+            ?>
+                <hr>
+                <h3>Vota y comenta</h3>
+                <form action="guardar_voto.php" method="post" id="form-voto">
+                    <input type="hidden" name="id_peli" value="<?php echo htmlspecialchars($id_peli); ?>">
+                <input type="hidden" name="id_user" value="<?php echo htmlspecialchars($_SESSION['usuario_id']); ?>" >
+                    <input type="hidden" name="voto" id="voto" value="0">
+
+                    <div class="star-rating mb-3">
+                        <i class="bi bi-star" data-value="1"></i>
+                        <i class="bi bi-star" data-value="2"></i>
+                        <i class="bi bi-star" data-value="3"></i>
+                        <i class="bi bi-star" data-value="4"></i>
+                        <i class="bi bi-star" data-value="5"></i>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="comentario" class="form-label">Tu comentario</label>
+                        <textarea class="form-control" id="comentario" name="comentario" rows="3" placeholder="Escribe tu opinión..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Enviar Voto</button>
+                </form>
+            <?php else: ?>
+                <div class="alert alert-info mt-4">
+                    Ya has votado y comentado esta película. ¡Gracias por tu participación!
+                </div>
+            <?php endif; ?>
+        <?php else: ?>
+            <div class="alert alert-warning mt-4">
+                <a href="iniciar_sesion.php" class="alert-link">Inicia sesión</a> para poder votar y comentar esta película.
+            </div>
+        <?php endif; ?>
 
     </main>
 
@@ -331,7 +340,6 @@ $premios = $stmt_premios->get_result();
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
     <script>
         const stars = document.querySelectorAll('.star-rating i');
         const inputVoto = document.getElementById('voto');
@@ -353,13 +361,6 @@ $premios = $stmt_premios->get_result();
                     }
                 });
             });
-        });
-
-        document.getElementById('form-voto').addEventListener('submit', function(e) {
-            if (inputVoto.value == 0) {
-                e.preventDefault();
-                alert('Por favor, selecciona una cantidad de estrellas para votar.');
-            }
         });
     </script>
 </body>
