@@ -19,7 +19,7 @@ $resultado = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Resultados de Búsqueda</title>
     <link rel="stylesheet" href="header.css">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="./Imagenes/Logo_fondo_blanco.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -59,8 +59,8 @@ $resultado = $stmt->get_result();
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
-                        <form action="buscar.php" method="get" class="input-group">
-                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar películas..." required>
+                        <form action="buscar_directores.php" method="get" class="input-group">
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar directores" required>
                             <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -112,18 +112,15 @@ $resultado = $stmt->get_result();
 
         <?php if ($resultado->num_rows > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
-                <?php while ($fila = $resultado->fetch_assoc()): ?>
+                <?php while ($director = $resultado->fetch_assoc()): ?>
                     <div class="col-6 col-md-4 mb-4">
-                        <div class="col-6 col-md-4 mb-4">
-                            <div class="card h-100 shadow">
-                                <img src="<?= $fila['Foto'] ?? 'nada' ?>" class="card-img-top object-fit-cover" alt="Foto de <?= htmlspecialchars($fila['NOMBRE']) ?>">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?= htmlspecialchars($fila['NOMBRE'] . ' ' . $fila['APELLIDO']) ?></h5>
-                                    <p class="card-text">
-                                        <?= $fila['BIOGRAFIA'] ? substr($fila['BIOGRAFIA'], 0, 100) . '...' : 'Biografía no disponible.' ?>
-                                    </p>
-                                    <p class="card-text"><small class="text-muted">Fecha de nacimiento: <?= htmlspecialchars($actor['fecha_nac'] ?? 'Sin datos') ?></small></p>
-                                </div>
+                        <div class="card h-100 shadow">
+                            <img src="./Imagenes/<?= htmlspecialchars($director['Foto'] ?? 'default.jpg') ?>" class="card-img-top object-fit-cover" alt="Foto de <?= htmlspecialchars($director['NOMBRE']) ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= htmlspecialchars($director['NOMBRE']) ?></h5>
+                                <p class="card-text"><?= htmlspecialchars($director['APELLIDO']) ?></p>
+                                <p class="card-text"><?= htmlspecialchars($director['BIOGRAFIA']) ?></p>
+                                <p class="card-text"><small class="text-muted">Fecha de nacimiento: <?= htmlspecialchars($director['FECHA_NAC'] ?? 'Sin datos') ?></small></p>
                             </div>
                         </div>
                     </div>

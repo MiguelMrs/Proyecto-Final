@@ -108,7 +108,7 @@ $resultado = mysqli_query($conn, $query);
     <main class="container my-5">
         <h1 class="text-center mb-4">Actores Destacados</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php while ($actor = mysqli_fetch_assoc($resultado)) : ?>
+            <?php while ($actor = $resultado->fetch_assoc()): ?>
                 <div class="col">
                     <div class="card h-100 shadow-sm">
                         <img src="./imagenes/<?= htmlspecialchars($actor['foto']) ?>" class="card-img-top object-fit-cover" alt="<?= htmlspecialchars($actor['nombre']) ?>">

@@ -107,7 +107,7 @@ $resultado = mysqli_query($conn, $query);
     <main class="container my-5">
         <h1 class="text-center mb-4">Directores Destacados</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php while ($director = mysqli_fetch_assoc($resultado)) : ?>
+            <?php while ($director = $resultado->fetch_assoc()): ?>
                 <div class="col">
                     <div class="card h-100 shadow-sm">
                         <img src="./Imagenes/<?= htmlspecialchars($director['foto']) ?>" class="card-img-top object-fit-cover" alt="<?= htmlspecialchars($director['nombre']) ?>">

@@ -5,7 +5,7 @@ require 'conexion.php';
 $busqueda = $_GET['buscador'] ?? '';
 
 // Consulta SQL para buscar por nombre del actor
-$sql = "SELECT * FROM ACTORES WHERE NOMBRE LIKE ? ORDER BY NOMBRE ASC";
+$sql = "SELECT *  FROM ACTORES WHERE NOMBRE LIKE ? ORDER BY NOMBRE ASC";
 $stmt = $conn->prepare($sql);
 $likeBusqueda = "%" . $busqueda . "%";
 $stmt->bind_param("s", $likeBusqueda);
@@ -59,8 +59,8 @@ $resultado = $stmt->get_result();
                     </div>
                     <!-- Barra de búsqueda -->
                     <div class="col-8 col-sm-5 order-sm-1">
-                        <form action="buscar.php" method="get" class="input-group">
-                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar películas..." required>
+                        <form action="buscar_actores.php" method="get" class="input-group">
+                            <input type="text" class="form-control search-box" name="buscador" placeholder="Buscar actores" required>
                             <button class="btn search-btn" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -112,10 +112,10 @@ $resultado = $stmt->get_result();
 
         <?php if ($resultado->num_rows > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
-                <?php while ($actor = mysqli_fetch_assoc($resultado)) : ?>
+                <?php while ($actor = $resultado->fetch_assoc()): ?>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src="./imagenes/<?= htmlspecialchars($actor['FOTO']) ?>" class="card-img-top object-fit-cover" alt="<?= htmlspecialchars($actor['NOMBRE']) ?>">
+                            <img src="./imagenes/<?= $actor['Foto'] ?? 'nada'?>" class="card-img-top object-fit-cover" alt="<?= htmlspecialchars($actor['NOMBRE']) ?>">
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($actor['NOMBRE']) ?></h5>
                                 <p class="card-text"><?= htmlspecialchars($actor['APELLIDO']) ?></p>
