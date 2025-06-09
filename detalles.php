@@ -219,7 +219,7 @@ $premios = $stmt_premios->get_result();
 
         <hr>
 
-        <?php
+        <?php                                                                   //COMENTARIOS 
         // Consulta para obtener comentarios de la película con nombre de usuario
         $sql = "SELECT c.CALIFICACION, c.COMENTARIO, c.FECHA_COMENTARIO, u.nombre AS usuario
                 FROM comentarios c
@@ -303,7 +303,7 @@ $premios = $stmt_premios->get_result();
                 <!-- Géneros -->
                 <div class="col-md-2 col-6 mb-4">
                     <h5 class="text-warning mb-3">Géneros</h5>
-                    <ul class="list-unstyled footer-links">
+                    <ul class="list-unstyled footer-links"> <!-- Quita los puntos que tiene por defecto-->
                         <li class="mb-2"><a href="accion.php" class="footer-links text-decoration-none">Acción</a></li>
                         <li class="mb-2"><a href="drama.php" class="footer-links text-decoration-none">Drama</a></li>
                         <li class="mb-2"><a href="comedia.php" class="footer-links text-decoration-none">Comedia</a></li>

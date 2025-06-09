@@ -1,3 +1,14 @@
+<?php
+$error = '';
+if (isset($_GET['error'])) {
+    if ($_GET['error'] == 1) {
+        $error = 'Contraseña incorrecta';
+    } elseif ($_GET['error'] == 2) {
+        $error = 'Correo no encontrado';
+    }
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -19,11 +30,19 @@
         <div class="container my-5">
             <div class="login-container">
                 <div class="cine-brand">
-                    <img src="./Imagenes/Logo_fondo_blanco.png"  alt="CineRate">
+                    <a href="index.php">
+                        <img src="./Imagenes/Logo_fondo_blanco.png" alt="CineRate">
+                    </a>
                     <h2>Iniciar Sesión</h2>
+
                     <p class="text-muted">Accede a tu cuenta para guardar tus películas favoritas</p>
+                    <?php if (!empty($error)): ?>
+                        <div class="alert alert-danger text-center" role="alert">
+                            <?php echo $error; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                
+
                 <form action="procesar_login.php" method="POST">
                     <div class="mb-4">
                         <label for="email" class="form-label">Correo Electrónico</label>
@@ -32,7 +51,7 @@
                             <input type="email" class="form-control" id="email" name="email" required placeholder="tucorreo@ejemplo.com">
                         </div>
                     </div>
-                    
+
                     <div class="mb-4">
                         <label for="password" class="form-label">Contraseña</label>
                         <div class="input-group">
@@ -40,10 +59,10 @@
                             <input type="password" class="form-control" id="password" name="password" required placeholder="••••••••">
                         </div>
                     </div>
-                
-                    
+
+
                     <button type="submit" class="btn btn-cine w-100 mb-3">Iniciar Sesión</button>
-                    
+
                     <div class="text-center">
                         <p class="mb-0">¿No tienes una cuenta? <a href="registrar.php" class="text-warning text-decoration-none">Regístrate</a></p>
                     </div>
@@ -54,4 +73,5 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

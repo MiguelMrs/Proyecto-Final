@@ -113,7 +113,7 @@ $resultado = $conn->query($sql);
           <h1 class="text-center mb-4">Películas Destacadas</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <div class="col-6 col-md-4 mb-4">
+                <div class="col-6 col-md-4">
                     <div class="card h-100 shadow">
                         <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>">
                             <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>">

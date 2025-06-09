@@ -1,97 +1,119 @@
-/* Header */
+/* Header: Estilo del encabezado principal */
 .cine-header {
-    background-color: #1a1a1a;
-    color: white;
+    background-color: #1a1a1a; /* Fondo oscuro para el header */
+    color: white; /* Texto en blanco para contraste */
 }
 
-/* Añade margen al main para que el contenido no quede oculto detrás del header fijo */
+/* Margen superior para main, evita que el contenido quede oculto detrás del header fijo */
 main {
-    margin-top: 420px; /* Ajusta este valor según la altura de tu header */
+    margin-top: 420px; /* Ajusta este valor según la altura real del header */
 }
-.categoria-cine{
-    color:white;
-    font-weight: 400px;
+
+/* Estilo para los enlaces de categoría en la navegación */
+.categoria-cine {
+    color: white; /* Texto blanco */
+    font-weight: 400px; /* Peso de fuente normal (nota: debería ser 400 sin px) */
 }
+
+/* Cambio de color al pasar el cursor sobre los enlaces de categoría */
 .categoria-cine:hover {
-    color: #f5c518 ;
+    color: #f5c518; /* Amarillo CineRate */
 }
+
+/* Estilo para los elementos del dropdown al hacer hover */
 .dropdown-item:hover {
-    background-color: #3a3a3a;
-    color: #f5c518;
+    background-color: #3a3a3a; /* Fondo gris oscuro al pasar el mouse */
+    color: #f5c518; /* Texto amarillo */
 }
+
+/* Fondo del menú desplegable de géneros */
 .dropdown-menu-genero {
-    background-color: #1a1a1a ; 
-}
-.search-btn { /* Poner la lupa redonda */
-    border-radius: 0 20px 20px 0;
-    background-color: #f5c518;
-    color: #1a1a1a;
+    background-color: #1a1a1a; /* Fondo oscuro para que coincida con el tema */
 }
 
+/* Botón de búsqueda (lupa) con bordes redondeados solo a la derecha */
+.search-btn {
+    border-radius: 0 20px 20px 0; /* Bordes redondeados en la parte derecha */
+    background-color: #f5c518; /* Fondo amarillo */
+    color: #1a1a1a; /* Color del icono (oscuro) */
+}
+
+/* Estilo cuando el input del buscador está enfocado */
 .form-control:focus {
-    border-color: #f5c518;
-    box-shadow: 0 0 0 3.5px rgba(245, 197, 24, 0.25);
+    border-color: #f5c518; /* Borde amarillo */
+    box-shadow: 0 0 0 3.5px rgba(245, 197, 24, 0.25); /* Sombra amarilla difusa alrededor */
 }
 
-/*FOOTER*/
-footer.bg-dark { 
-    background: linear-gradient(45deg, #1a1a1a, #333);
+/* FOOTER */
+/* Fondo degradado para el pie de página */
+footer.bg-dark {
+    background: linear-gradient(45deg, #1a1a1a, #333); /* Degradado diagonal oscuro */
 }
 
-
-.footer-links{
-    color:white;
-    font-weight: 400px;
+/* Enlaces dentro del footer */
+.footer-links {
+    color: white; /* Texto blanco */
+    font-weight: 400px; /* Peso normal (de nuevo, sin px es mejor) */
 }
+
+/* Efecto hover para enlaces del footer */
 .footer-links:hover {
-    color: #f5c518 ;
+    color: #f5c518; /* Color amarillo al pasar el cursor */
 }
 
-.social-icons:hover { 
-    color: #f5c518 ;
+/* Efecto hover para los iconos sociales */
+.social-icons:hover {
+    color: #f5c518; /* Cambian a amarillo */
 }
 
-/*main*/
-/* Asegurar consistencia en las tarjetas */
+/* MAIN */
+/* Estilo general para las tarjetas que muestran películas */
 .card {
-    border-radius: 16px75;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 16px; /* Bordes redondeados */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animación suave al transformarse */
 }
 
+/* Efecto hover: la tarjeta sube ligeramente */
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Levanta la tarjeta */
 }
 
-/* Estilo para el contenedor de películas */
+/* Estilo para el contenedor de puntuaciones o rating */
 .rating {
-    color: #f5c518;
-    font-weight: 500;
+    color: #f5c518; /* Texto amarillo */
+    font-weight: 500; /* Peso de fuente medio */
 }
 
-/* Ajuste fino para el contenedor de imágenes */
+/* Ajuste para contenedores de imágenes con relación 2:3 */
 .ratio-2x3 {
-    overflow: hidden;
-    border-radius: 0.375rem 0.375rem 0 0 !important;
+    overflow: hidden; /* Oculta lo que sobresalga */
+    border-radius: 0.375rem 0.375rem 0 0 !important; /* Bordes redondeados en la parte superior */
 }
 
-/* Botón de votar */
-.btn-votar.btn-primary{
-    background-color: #f5c518;
-    border-color: #f5c518;
-    color: #1a1a1a;
+/* Botón de votar con color primario */
+.btn-votar.btn-primary {
+    background-color: #f5c518; /* Fondo amarillo */
+    border-color: #f5c518; /* Borde amarillo */
+    color: #1a1a1a; /* Texto oscuro */
 }
+
+/* Efecto hover para el botón votar */
 .btn-votar.btn-primary:hover {
-    background-color: #e0b000;
+    background-color: #e0b000; /* Amarillo más oscuro */
     border-color: #e0b000;
     color: #1a1a1a;
 }
+
+/* Margen vertical personalizado para separación de secciones */
 .my-5 {
-    margin-top: 10rem !important;
-    margin-bottom: 3rem !important;
+    margin-top: 10rem !important; /* Margen superior */
+    margin-bottom: 3rem !important; /* Margen inferior */
 }
+
+/* Media query para pantallas pequeñas (menos de 558px) */
 @media (max-width: 558px) {
-.my-5 {
-    margin-top: 15rem !important;
-    margin-bottom: 3rem !important;
-}
+    .my-5 {
+        margin-top: 15rem !important; /* Más margen arriba en móvil para evitar superposición */
+        margin-bottom: 3rem !important; /* Igual margen abajo */
+    }
 }

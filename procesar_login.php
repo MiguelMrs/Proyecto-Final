@@ -1,36 +1,35 @@
 <?php
-session_start();  // Inicia la sesión para poder usar variables de sesión
+session_start(); // Inicia la sesión para poder guardar datos del usuario si el login es exitoso
+include 'conexion.php'; // Incluye el archivo para conectar con la base de datos
 
-include 'conexion.php'; // Incluye el archivo que contiene la conexión a la base de datos
-
-// Obtiene los datos enviados desde el formulario por método POST
+// Recoge los datos enviados por el formulario POST (email y contraseña)
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-// Prepara la consulta SQL para buscar un usuario con el email proporcionado
+// Prepara una consulta SQL para buscar un usuario con el email dado
 $sql = "SELECT * FROM usuarios WHERE EMAIL = ?";
-$stmt = $conn->prepare($sql); // Prepara la consulta evitando inyección SQL
-$stmt->bind_param("s", $email); // Vincula el parámetro $email en la consulta (tipo string)
+$stmt = $conn->prepare($sql); // Preparar la sentencia para evitar inyección SQL
+$stmt->bind_param("s", $email); // Vincula el parámetro email como string
 $stmt->execute(); // Ejecuta la consulta
 $resultado = $stmt->get_result(); // Obtiene el resultado de la consulta
 
-// Verifica si encontró un usuario con ese correo
+// Verifica si se encontró un usuario con ese email
 if ($fila = $resultado->fetch_assoc()) {
-    // Si existe el usuario, verifica que la contraseña ingresada coincida con el hash almacenado
+    // Si existe, verifica que la contraseña introducida coincida con el hash almacenado en la base de datos
     if (password_verify($password, $fila['PASSWORD'])) {
-        // Si la contraseña es correcta, guarda información del usuario en variables de sesión
+        // Si la contraseña es correcta, guarda datos del usuario en la sesión
         $_SESSION['usuario_id'] = $fila['ID_USER'];
-        $_SESSION['usuario_nombre'] = $fila['NOMBRE']; // Este dato se usa luego, por ejemplo en el header
-
-        // Redirige al usuario a la página principal
-        header("Location: index.php");
-        exit(); // Para que no se ejecute código después de la redirección
+        $_SESSION['usuario_nombre'] = $fila['NOMBRE'];
+        header("Location: index.php"); // Redirige a la página principal
+        exit(); // Finaliza el script
     } else {
-        // Si la contraseña no coincide, muestra mensaje de error
-        echo "Contraseña incorrecta";
+        // Si la contraseña es incorrecta, redirige a la página de login con un error
+        header("Location: iniciar_sesion.php?error=1"); // Error: contraseña incorrecta
+        exit();
     }
 } else {
-    // Si no se encontró un usuario con ese correo, muestra mensaje de error
-    echo "Correo no encontrado";
+    // Si no se encuentra un usuario con ese email, redirige con otro error
+    header("Location: iniciar_sesion.php?error=2"); // Error: email no encontrado
+    exit();
 }
 ?>
