@@ -230,7 +230,7 @@ $premios = $stmt_premios->get_result();
             echo "<h4>Comentarios de usuarios:</h4>";
             echo "<ul class='list-group'>";
             while ($row = $result->fetch_assoc()) {
-                // Mostrar estrellas según la calificación
+               // La función str_repeat() en PHP repite una cadena de texto un número determinado de veces.
                 $estrellas = str_repeat('★', $row['CALIFICACION']) . str_repeat('☆', 5 - $row['CALIFICACION']);
 
                 // Nombre del usuario o anónimo
@@ -311,7 +311,7 @@ $premios = $stmt_premios->get_result();
                         <li class="mb-2"><a href="terminos.php" class="footer-links text-decoration-none">Términos de uso</a></li>
                         <li class="mb-2"><a href="privacidad.php" class="footer-links text-decoration-none">Política de privacidad</a></li>
                         <li class="mb-2"><a href="cookies.php" class="footer-links text-decoration-none">Política de cookies</a></li>
-                        <li class="mb-2"><a href="contacto.php" class="footer-links text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="" class="footer-links text-decoration-none">Contacto</a></li>
                     </ul>
                 </div>
             </div>

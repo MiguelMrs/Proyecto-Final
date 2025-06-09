@@ -170,7 +170,7 @@ $resultado = $stmt->get_result();
                         <li class="mb-2"><a href="terminos.php" class="footer-links text-decoration-none">Términos de uso</a></li>
                         <li class="mb-2"><a href="privacidad.php" class="footer-links text-decoration-none">Política de privacidad</a></li>
                         <li class="mb-2"><a href="cookies.php" class="footer-links text-decoration-none">Política de cookies</a></li>
-                        <li class="mb-2"><a href="contacto.php" class="footer-links text-decoration-none">Contacto</a></li>
+                        <li class="mb-2"><a href="" class="footer-links text-decoration-none">Contacto</a></li>
                     </ul>
                 </div>
             </div>
