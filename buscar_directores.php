@@ -4,12 +4,22 @@ require 'conexion.php';
 
 $busqueda = $_GET['buscador'] ?? '';
 
-// Consulta SQL para buscar por nombre del actor
+// Consulta SQL para buscar por nombre del actor con un patrón
 $sql = "SELECT * FROM directores WHERE NOMBRE LIKE ? ORDER BY NOMBRE ASC";
+
+// Preparar la consulta para proteger contra inyección SQL
 $stmt = $conn->prepare($sql);
+
+// Construir el patrón de búsqueda con comodines para buscar en cualquier parte del nombre
 $likeBusqueda = "%" . $busqueda . "%";
+
+// Asociar el parámetro ? con el valor de búsqueda (tipo string)
 $stmt->bind_param("s", $likeBusqueda);
+
+// Ejecutar la consulta preparada con el parámetro ya asignado
 $stmt->execute();
+
+// Obtener el resultado de la consulta para poder procesarlo
 $resultado = $stmt->get_result();
 ?>
 <!DOCTYPE html>

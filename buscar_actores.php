@@ -7,6 +7,7 @@ $busqueda = $_GET['buscador'] ?? '';
 // Consulta SQL para buscar por nombre del actor
 $sql = "SELECT *  FROM ACTORES WHERE NOMBRE LIKE ? ORDER BY NOMBRE ASC";
 $stmt = $conn->prepare($sql);
+// Construir el patrón de búsqueda con comodines para buscar en cualquier parte del nombre
 $likeBusqueda = "%" . $busqueda . "%";
 $stmt->bind_param("s", $likeBusqueda);
 $stmt->execute();

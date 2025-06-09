@@ -179,18 +179,25 @@ $premios = $stmt_premios->get_result();
         <div class="container my-4">
             <h4>Reparto</h4>
             <div class="position-relative ">
+                <!-- Comprobar si hay actores en el resultado de la consulta -->
                 <?php if ($actores->num_rows > 0): ?>
+                    <!-- Contenedor flexible con scroll horizontal para mostrar los actores -->
                     <div class="d-flex overflow-auto pb-3" style="scroll-snap-type: x mandatory;">
+                        <!-- Bucle para recorrer cada fila de actor en el resultado -->
                         <?php while ($actor = $actores->fetch_assoc()): ?>
-                            <div class="text-center mx-2" style="min-width: 100px; scroll-snap-align: start; ">
+                            <!-- Caja para cada actor, con centrado y espacio horizontal -->
+                            <div class="text-center mx-2" style="min-width: 100px; scroll-snap-align: start;">
+                                <!-- Imagen del actor, cargada desde la carpeta Imagenes, con estilos para tamaño y forma -->
                                 <img src="./Imagenes/<?php echo htmlspecialchars($actor['foto']); ?>"
                                     class="rounded mb-2 mx-3"
                                     alt="<?php echo htmlspecialchars($actor['nombre']); ?>"
                                     style="width: 100px; height: 140px; object-fit: cover;">
+                                <!-- Nombre del actor, mostrado debajo de la imagen -->
                                 <div class="small"><?php echo htmlspecialchars($actor['nombre']); ?></div>
                             </div>
                         <?php endwhile; ?>
                     </div>
+                    <!-- Si no hay actores, mostrar mensaje informativo -->
                 <?php else: ?>
                     <p class="text-muted">No hay datos disponibles en estos momentos.</p>
                 <?php endif; ?>
@@ -230,7 +237,7 @@ $premios = $stmt_premios->get_result();
             echo "<h4>Comentarios de usuarios:</h4>";
             echo "<ul class='list-group'>";
             while ($row = $result->fetch_assoc()) {
-               // La función str_repeat() en PHP repite una cadena de texto un número determinado de veces.
+                // La función str_repeat() en PHP repite una cadena de texto un número determinado de veces.
                 $estrellas = str_repeat('★', $row['CALIFICACION']) . str_repeat('☆', 5 - $row['CALIFICACION']);
 
                 // Nombre del usuario o anónimo
