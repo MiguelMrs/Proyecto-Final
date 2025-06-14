@@ -13,7 +13,7 @@ $sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO,
         ORDER BY PELICULAS.TITULO ASC";
 
 $stmt = $conn->prepare($sql);
-$likeBusqueda = "%" . $busqueda . "%";
+$likeBusqueda = "%" . $busqueda . "%"; //Buscar las coicidencias en el título
 $stmt->bind_param("ss", $likeBusqueda, $likeBusqueda);
 $stmt->execute();
 $resultado = $stmt->get_result();

@@ -1,29 +1,64 @@
 <?php
 session_start();
 require 'conexion.php';
-$sql = "SELECT PELICULAS.*, GENERO.NOMBRE AS NOMBRE_GENERO, 
-YEAR(PELICULAS.FECHA_ESTRENO) AS ANIO_ESTRENO
-FROM PELICULAS
-LEFT JOIN GENERO ON PELICULAS.ID_GENERO = GENERO.ID_GENERO;";;
 
-$resultado = $conn->query($sql);
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: iniciar_sesion.php");
+    exit;
+}
+
+$id_usuario = $_SESSION['usuario_id'];
+$id_comentario = $_GET['id'] ?? null;
+
+if (!$id_comentario) {
+    die("ID del comentario no especificado.");
+}
+
+// Verificar propiedad del comentario
+$sql = "SELECT COMENTARIO FROM comentarios WHERE ID_COMENT = ? AND ID_USER = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $id_comentario, $id_usuario);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+if ($resultado->num_rows === 0) {
+    die("Comentario no encontrado o no tienes permiso para editarlo.");
+}
+
+$comentario_actual = $resultado->fetch_assoc()['COMENTARIO'];
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nuevo_comentario = trim($_POST['comentario'] ?? '');
+
+    if ($nuevo_comentario === '') {
+        $error = "El comentario no puede estar vacío.";
+    } else {
+        $sql_update = "UPDATE comentarios SET COMENTARIO = ? WHERE ID_COMENT = ? AND ID_USER = ?";
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("sii", $nuevo_comentario, $id_comentario, $id_usuario);
+        if ($stmt_update->execute()) {
+            header("Location: comentario.php");
+            exit;
+        } else {
+            $error = "Error al actualizar el comentario.";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineRate</title>
+    <meta charset="UTF-8" />
+    <title>Editar Comentario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="icon" href="./Imagenes/Logo_fondo_blanco.png" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="header.css" type="text/css">
-
-
 </head>
 
 <body>
@@ -109,41 +144,20 @@ $resultado = $conn->query($sql);
             </div>
         </nav>
     </header>
-    <!-- Fin del header -->
-
-    <!-- Contenido principal -->
     <main class="container my-5">
-          <h1 class="text-center mb-4">Películas Destacadas</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php while ($fila = $resultado->fetch_assoc()) { ?>
-                <div class="col-6 col-md-4">
-                    <div class="card h-100 shadow">
-                        <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>">
-                            <img src="<?php echo $fila['IMAGEN']; ?>" class="card-img-top object-fit-cover" alt="<?php echo $fila['TITULO'] ?? 'Sin título'; ?>">
-                        </a>
-
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $fila['TITULO'] ?? 'Sin título'; ?></h5>
-                            <div class="mb-2">
-                                <span class="badge bg-warning text-dark me-1"><?php echo $fila['NOMBRE_GENERO'] ?? 'Sin género'; ?></span>
-                                <span class="badge bg-secondary"> <?php echo $fila['ANIO_ESTRENO'] ?? 'Sin fecha'; ?></span><br>
-                            </div>
-                            <span class="card-text">Duración: <?php echo isset($fila['DURACION']) ? $fila['DURACION'] . ' min' : 'Sin duración'; ?></span><br>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="rating">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span><?php echo $fila['CALIFICACION'] ?? '0.0'; ?>/5</span>
-                                </div>
-                                <a href="detalles.php?id_peli=<?php echo $fila['ID_PELI']; ?>" class="btn btn-sm btn-warning">Ver detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php } ?>
-        </div>
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        <form method="post" style="max-width: 600px; margin: 2rem auto; padding: 1.5rem; background-color: #1a1a1a; border-radius: 12px;">
+            <div class="mb-3">
+                <label for="comentario" class="form-label categoria-cine">Comentario</label>
+                <textarea id="comentario" name="comentario" rows="5" required
+                    class="form-control"><?= htmlspecialchars($comentario_actual) ?></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a href="comentario.php" class="btn btn-secondary ms-2">Cancelar</a>
+        </form>
     </main>
-
-
 
     <footer class="bg-dark text-white pt-4 pb-2">
         <div class="container">
@@ -189,9 +203,6 @@ $resultado = $conn->query($sql);
             </div>
         </div>
     </footer>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
