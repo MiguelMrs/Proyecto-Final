@@ -25,7 +25,19 @@
                     <h2>Registrarse</h2>
                     <p class="text-muted">Crea tu cuenta para guardar tus películas favoritas</p>
                 </div>
-
+                <?php
+                if (isset($_GET['error'])) {
+                    $error = $_GET['error'];
+                    if ($error === 'password_mismatch') {
+                        $mensaje_error = "❌ Las contraseñas no coinciden.";
+                    } elseif ($error === 'usuario_repetido') {
+                        $mensaje_error = "⚠️ Este correo ya está registrado.";
+                    } else {
+                        $mensaje_error = htmlspecialchars(urldecode($error));
+                    }
+                    echo "<div class='alert alert-danger text-center'>$mensaje_error</div>";
+                }
+                ?>
                 <form action="procesar_registro.php" method="POST">
                     <div class="mb-4">
                         <label for="nombre" class="form-label">Nombre completo</label>

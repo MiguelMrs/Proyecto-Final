@@ -7,6 +7,7 @@ if (isset($_GET['error'])) {
         $error = 'Correo no encontrado';
     }
 }
+
 ?>
 
 
@@ -40,6 +41,13 @@ if (isset($_GET['error'])) {
                         <div class="alert alert-danger text-center" role="alert">
                             <?php echo $error; ?>
                         </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($_GET['registro']) && $_GET['registro'] === 'exitoso'): ?>
+                        <div class="alert alert-success text-center" role="alert">
+                            Registro correcto, ya puedes iniciar sesión.
+                        </div>
+
                     <?php endif; ?>
                 </div>
 

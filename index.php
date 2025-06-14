@@ -113,7 +113,13 @@ $resultado = $conn->query($sql);
 
     <!-- Contenido principal -->
     <main class="container my-5">
-          <h1 class="text-center mb-4">Películas Destacadas</h1>
+        <?php
+        if (isset($_SESSION['mensaje_exito'])) {
+            echo '<div class="alert alert-success text-center">' . htmlspecialchars($_SESSION['mensaje_exito']) . '</div>';
+            unset($_SESSION['mensaje_exito']); // Borra el mensaje para que solo se muestre una vez
+        }
+        ?>
+        <h1 class="text-center mb-4">Películas Destacadas</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php while ($fila = $resultado->fetch_assoc()) { ?>
                 <div class="col-6 col-md-4">
