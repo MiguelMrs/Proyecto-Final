@@ -98,6 +98,9 @@ $resultado = mysqli_query($conn, $query);
                         <li class="nav-item">
                             <a class="nav-link categoria-cine" href="premios.php"><i class="bi bi-trophy"></i> Premios</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link categoria-cine" href="comentario.php"><i class="bi bi-chat-left-text"></i> Comentarios</a>
+                        </li>
                     </ul>
                 </div>
             </div>

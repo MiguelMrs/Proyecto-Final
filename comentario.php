@@ -95,13 +95,24 @@ $result_user_comentarios = $stmt->get_result();
                                 <li><a class="dropdown-item categoria-cine" href="drama.php">Drama</a></li>
                                 <li><a class="dropdown-item categoria-cine" href="comedia.php">Comedia</a></li>
                                 <li><a class="dropdown-item categoria-cine" href="cienciaficcion.php">Ciencia Ficción</a></li>
-                                <li><a class="dropdown-item categoria-cine" href="terror.php">Terror</a></li>
-                                <li><a class="dropdown-item categoria-cine" href="romance.php">Romance</a></li>
+                                <li><a class="dropdown-item categoria-cine" href="terror.php">Terror</a>
+                            </li>
+                                <li><a class="dropdown-item categoria-cine" href="romance.php">Romance</a>
+                            </li>
                             </ul>
                         </li>
-                        <li class="nav-item"><a class="nav-link categoria-cine" href="actores.php"><i class="bi bi-people"></i> Actores</a></li>
-                        <li class="nav-item"><a class="nav-link categoria-cine" href="directores.php"><i class="bi bi-camera-reels"></i> Directores</a></li>
-                        <li class="nav-item"><a class="nav-link categoria-cine" href="premios.php"><i class="bi bi-trophy"></i> Premios</a></li>
+                        <li class="nav-item"><a class="nav-link categoria-cine" href="actores.php">
+                            <i class="bi bi-people"></i> Actores</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link categoria-cine" href="directores.php">
+                            <i class="bi bi-camera-reels"></i> Directores</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link categoria-cine" href="premios.php">
+                            <i class="bi bi-trophy"></i> Premios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link categoria-cine" href="comentario.php"><i class="bi bi-chat-left-text"></i> Comentarios</a>
+                        </li>
                     </ul>
                 </div>
             </div>
